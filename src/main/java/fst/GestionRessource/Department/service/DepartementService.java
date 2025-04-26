@@ -1,6 +1,6 @@
 package fst.GestionRessource.Department.service;
 
-public interface DepartementService {
+public interface DepartmentService {
    public ResponseEntity<?> getAllDepartments();
 
    public ResponseEntity<?> getDepartmentById(String id);
