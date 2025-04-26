@@ -42,4 +42,13 @@ public class Proposal {
 
   // @OneToOne(mappedBy = "selectedProposal")
   // private CallForTender selectedBy;
+
+  public Double calculateTotalPrice() {
+    double total = 0;
+    for (ProposalProduct proposalProduct : proposalProducts) {
+      total += proposalProduct.getQuantity() * proposalProduct.getUnitPrice();
+    }
+    this.totalPrice = total;
+    return total;
+  }
 }
