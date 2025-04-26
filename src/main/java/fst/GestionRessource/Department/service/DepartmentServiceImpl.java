@@ -10,7 +10,7 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class DepartmentServiceImpl implements DepartementService {
+public class DepartmentServiceImpl implements DepartmentService {
   private final DepartmentRepository repository;
 
   public ResponseEntity<?> getAllDepartments() {
