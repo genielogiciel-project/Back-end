@@ -8,13 +8,13 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
 import fst.GestionRessource.Department.model.Department;
-import fst.GestionRessource.Department.service.DepartmentService;
+import fst.GestionRessource.Department.service.DepartmentServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
 public class InitialDepartments implements ApplicationListener<ContextRefreshedEvent> {
-  private final DepartmentService service;
+  private final DepartmentServiceImpl service;
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {

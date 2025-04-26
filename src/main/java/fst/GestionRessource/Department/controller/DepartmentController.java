@@ -11,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fst.GestionRessource.Department.model.Department;
-import fst.GestionRessource.Department.service.DepartmentService;
+import fst.GestionRessource.Department.service.DepartmentServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/department")
 @RequiredArgsConstructor
 public class DepartmentController {
-  private final DepartmentService service;
+  private final DepartmentServiceImpl service;
 
   @GetMapping
   public ResponseEntity<?> getAllDepartments() {
