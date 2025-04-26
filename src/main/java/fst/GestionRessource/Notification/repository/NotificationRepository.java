@@ -1,0 +1,11 @@
+package fst.GestionRessource.Notification.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import fst.GestionRessource.Notification.model.Notification;
+
+@Repository
+public interface NotificationRepository extends JpaRepository<Notification, String> {
+
+}
