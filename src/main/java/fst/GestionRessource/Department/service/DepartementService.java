@@ -3,7 +3,7 @@ package fst.GestionRessource.Department.service;
 import fst.GestionRessource.Department.model.Department;
 import org.springframework.http.ResponseEntity;
 
-public interface DepartmentService {
+public interface DepartementService {
    public ResponseEntity<?> getAllDepartments();
 
    public ResponseEntity<?> getDepartmentById(String id);
