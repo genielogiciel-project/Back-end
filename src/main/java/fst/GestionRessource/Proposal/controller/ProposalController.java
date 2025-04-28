@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/proposal")
 public class ProposalController {
-    private ProposalService service;
+    private final ProposalService service;
+
+    public ProposalController(ProposalService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllProposals() {

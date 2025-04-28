@@ -13,6 +13,10 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
 
     private ResourceRequestRepository repository;
 
+    public ResourceRequestServiceImpl(ResourceRequestRepository repository) {
+        this.repository = repository;
+    }
+
     @Override
     public ResponseEntity<?> getAllResourceRequests() {
         return ResponseEntity.ok(repository.findAll());

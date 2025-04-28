@@ -30,6 +30,7 @@ public class ProposalServiceImpl implements ProposalService{
         try {
             var ID = IdGenerator.generateId("PROP-");
             while (proposalRepository.existsById(ID)) {
+                System.out.println("test hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
                 ID = IdGenerator.generateId("PROP-");
             }
             proposal.setId(ID);

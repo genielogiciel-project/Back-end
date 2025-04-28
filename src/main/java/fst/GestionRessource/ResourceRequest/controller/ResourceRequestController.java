@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/resource-request")
 public class ResourceRequestController {
-    private ResourceRequestServiceImpl service;
+    private final ResourceRequestServiceImpl service;
+
+    public ResourceRequestController(ResourceRequestServiceImpl service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllResourceRequests() {
