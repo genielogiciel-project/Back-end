@@ -1,9 +1,7 @@
 package fst.GestionRessource.Configuration;
 
-import lombok.RequiredArgsConstructor;
-
 import java.util.Arrays;
-
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,93 +25,88 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider authenticationProvider;
+    private final AuthenticationProvider  authenticationProvider;
 
-    // Constantes pour les chemins d'endpoints
-    private static final String AUTH_PATH = "/api/auth/**";
-    // private static final String SWAGGER_PATH = "/swagger-ui/**";
-    // private static final String API_DOCS_PATH = "/v3/api-docs/**";
-    // private static final String ACTUATOR_PATH = "/actuator/health";
-    private static final String RESOURCES_PATH = "/api/resource/**";
-    private static final String PANIC_REPORTS_PATH = "/api/panic-reports/**";
-    private static final String PROPOSALS_PATH = "/api/proposal/**";
-    private static final String TENDERS_PATH = "/api/tender/**";
-    private static final String REQUESTS_PATH = "/api/resource-request/**";
-    private static final String USERS_PATH = "/api/user/**";
+    /* === Endpoints ======================================================= */
+
+    private static final String AUTH_PATH        = "/api/auth/**";
+    private static final String USERS_PATH       = "/api/user/**";
+    private static final String RESOURCES_PATH   = "/api/resource/**";
+    private static final String SUPPLIER_PATH    = "/api/supplier/**";
+    private static final String PANIC_PATH       = "/api/panic-reports/**";
+    private static final String PROPOSALS_PATH   = "/api/proposal/**";
+    private static final String TENDERS_PATH     = "/api/tender/**";
+    private static final String REQUESTS_PATH    = "/api/resource-request/**";
+
+    /* === Security filter chain ========================================== */
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//         http
-//                 .cors().and().csrf()
-//                 .disable()
-//                 .authorizeHttpRequests()
-//                 .requestMatchers("api/auth/**")
-// //                .requestMatchers("/api/v1/**")
-//                 .permitAll()
-//                 .requestMatchers("/api/**").hasAnyAuthority("SUPER_ADMIN")
-//                 .anyRequest()
-//                 .authenticated()
-//                 .and()
-//                 .sessionManagement()
-//                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-//                 .and()
-//                 .authenticationProvider(authenticationProvider)
-//                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-//         ;
 
-                http
+        http
+                /* ---- CORS / CSRF ------------------------------------------- */
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
+
+                /* ---- Authorisation ----------------------------------------- */
                 .authorizeHttpRequests(auth -> auth
-                        // Endpoints publics
-                        // .requestMatchers(AUTH_PATH, SWAGGER_PATH, API_DOCS_PATH, ACTUATOR_PATH)
-                        .requestMatchers(AUTH_PATH)
-                        .permitAll()
-                        .requestMatchers("/api/**","/api/supplier/**","/api/resource/**")
-                        .hasAuthority(Role.SUPER_ADMIN.name())
-                        .requestMatchers(USERS_PATH)
-                        .hasAnyAuthority(Role.SUPER_ADMIN.name())
+
+                        /* --- 1. PUBLIC ----------------------------------------- */
+                        .requestMatchers(AUTH_PATH).permitAll()
+
+                        /* --- 2. ENSEIGNANT ------------------------------------- */
+                        .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAuthority(Role.TEACHER.name())
+                        .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAuthority(Role.TEACHER.name())
+
+                        /* --- 3. DÉPARTEMENT & ENSEIGNANT (lecture ressources) -- */
                         .requestMatchers(HttpMethod.GET, RESOURCES_PATH)
-                        .hasAnyAuthority(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name(), Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, RESOURCES_PATH)
+                        .hasAnyAuthority(Role.TEACHER.name(),
+                                Role.DEPARTMENT_HEAD.name(),
+                                Role.RESOURCE_MANAGER.name())
+
+                        /* --- 4. FOURNISSEUR ------------------------------------ */
+                        .requestMatchers(HttpMethod.POST, PROPOSALS_PATH).hasAuthority(Role.SUPPLIER.name())
+                        .requestMatchers(SUPPLIER_PATH).hasAuthority(Role.SUPPLIER.name())
+
+                        /* --- 5. RESOURCE MANAGER ------------------------------- */
+                        .requestMatchers(HttpMethod.POST, RESOURCES_PATH).hasAuthority(Role.RESOURCE_MANAGER.name())
+                        .requestMatchers(PANIC_PATH, PROPOSALS_PATH,
+                                TENDERS_PATH, REQUESTS_PATH)
                         .hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, PANIC_REPORTS_PATH)
-                        .hasAuthority(Role.TEACHER.name())
-                        .requestMatchers(PANIC_REPORTS_PATH)
-                        .hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, PROPOSALS_PATH)
-                        .hasAuthority(Role.SUPPLIER.name())
-                        .requestMatchers(PROPOSALS_PATH)
-                        .hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(TENDERS_PATH)
-                        .hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(HttpMethod.POST, REQUESTS_PATH)
-                        .hasAuthority(Role.TEACHER.name())
-                        .requestMatchers(REQUESTS_PATH)
-                        .hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .anyRequest()
-                        .authenticated()
+
+                        /* --- 6. SUPER-ADMIN (fallback) ------------------------- */
+                        .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
+                        .requestMatchers("/api/**").hasAuthority(Role.SUPER_ADMIN.name())
+
+                        /* --- 7. TOUT LE RESTE ---------------------------------- */
+                        .anyRequest().authenticated()
                 )
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
+
+                /* ---- Stateless session / JWT ------------------------------ */
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
+                /* ---- Gestion propre des erreurs JSON ---------------------- */
                 .exceptionHandling(exceptions -> exceptions
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"error\": \"Authentication failed: " + authException.getMessage() + "\"}");
+                        .authenticationEntryPoint((req, res, ex) -> {
+                            res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                            res.setContentType("application/json");
+                            res.getWriter().printf("{\"error\":\"Authentication failed: %s\"}", ex.getMessage());
                         })
-                        .accessDeniedHandler((request, response, accessDeniedException) -> {
-                            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-                            response.setContentType("application/json");
-                            response.getWriter().write("{\"error\": \"Access denied: " + accessDeniedException.getMessage() + "\"}");
+                        .accessDeniedHandler((req, res, ex) -> {
+                            res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                            res.setContentType("application/json");
+                            res.getWriter().printf("{\"error\":\"Access denied: %s\"}", ex.getMessage());
                         })
                 );
 
         return http.build();
     }
+
+    /* === CORS ============================================================ */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -128,4 +121,3 @@ public class SecurityConfiguration {
         return source;
     }
 }
-
