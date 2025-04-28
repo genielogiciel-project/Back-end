@@ -11,7 +11,11 @@ import org.springframework.stereotype.Service;
 public class SupplierServiceImpl implements SupplierService {
     // Assuming you have a SupplierRepository injected here
 
-    private SupplierRepository supplierRepository;
+    private final SupplierRepository supplierRepository;
+
+    public SupplierServiceImpl(SupplierRepository supplierRepository) {
+        this.supplierRepository = supplierRepository;
+    }
 
     @Override
     public ResponseEntity<?> getAllSuppliers() {

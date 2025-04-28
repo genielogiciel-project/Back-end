@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/supplier")
 public class SupplierController {
-    private SupplierServiceImpl service;
+    private final SupplierServiceImpl service;
+
+    public SupplierController(SupplierServiceImpl service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllSuppliers() {
