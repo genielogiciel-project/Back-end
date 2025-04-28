@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/requested-product")
 public class RequestedProductController {
-    private RequestedProductServiceImpl service;
+    private final RequestedProductServiceImpl service;
+
+    public RequestedProductController(RequestedProductServiceImpl service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAllRequestedProducts() {

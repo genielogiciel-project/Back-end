@@ -8,10 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+
 public class ResourceRequestServiceImpl implements ResourceRequestService {
 
-    private ResourceRequestRepository repository;
+    private final ResourceRequestRepository repository;
 
     public ResourceRequestServiceImpl(ResourceRequestRepository repository) {
         this.repository = repository;

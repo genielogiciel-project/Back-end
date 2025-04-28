@@ -69,7 +69,7 @@ public class SecurityConfiguration {
                         // .requestMatchers(AUTH_PATH, SWAGGER_PATH, API_DOCS_PATH, ACTUATOR_PATH)
                         .requestMatchers(AUTH_PATH)
                         .permitAll()
-                        .requestMatchers("/api/**","/api/supplier/**")
+                        .requestMatchers("/api/**","/api/supplier/**","/api/resource/**")
                         .hasAuthority(Role.SUPER_ADMIN.name())
                         .requestMatchers(USERS_PATH)
                         .hasAnyAuthority(Role.SUPER_ADMIN.name())

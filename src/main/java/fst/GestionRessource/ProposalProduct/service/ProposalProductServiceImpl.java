@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProposalProductServiceImpl implements ProposalProductService{
 
-    private ProposalProductRepository proposalProductRepository;
+    private final ProposalProductRepository proposalProductRepository;
+
+    public ProposalProductServiceImpl(ProposalProductRepository proposalProductRepository) {
+        this.proposalProductRepository = proposalProductRepository;
+    }
+
     @Override
     public ResponseEntity<?> getAllProposalProducts() {
         return ResponseEntity.ok(proposalProductRepository.findAll());

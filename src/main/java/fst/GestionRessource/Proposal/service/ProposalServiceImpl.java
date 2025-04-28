@@ -9,7 +9,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ProposalServiceImpl implements ProposalService{
 
-    private ProposalRepository proposalRepository;
+    private final ProposalRepository proposalRepository;
+
+    public ProposalServiceImpl(ProposalRepository proposalRepository) {
+        this.proposalRepository = proposalRepository;
+    }
+
     @Override
     public ResponseEntity<?> getAllProposals() {
         return ResponseEntity.ok(proposalRepository.findAll());
@@ -28,15 +33,22 @@ public class ProposalServiceImpl implements ProposalService{
     @Override
     public ResponseEntity<?> addProposal(Proposal proposal) {
         try {
+            System.out.println("Starting addProposal method");
             var ID = IdGenerator.generateId("PROP-");
-            while (proposalRepository.existsById(ID)) {
-                System.out.println("test hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh");
+            System.out.println("Generated ID: " + ID);
+
+            do {
                 ID = IdGenerator.generateId("PROP-");
-            }
+                System.out.println("Checking if ID exists: " + ID);
+            } while (proposalRepository.existsById(ID));
+
+            System.out.println("Final ID: " + ID);
             proposal.setId(ID);
             proposalRepository.save(proposal);
+            System.out.println("Proposal saved successfully");
             return ResponseEntity.ok("Proposal created successfully");
         } catch (Exception e) {
+            e.printStackTrace(); // Print the full stack trace for debugging
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
