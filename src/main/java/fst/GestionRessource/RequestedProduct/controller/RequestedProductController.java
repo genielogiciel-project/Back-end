@@ -18,16 +18,16 @@ public class RequestedProductController {
     public ResponseEntity<?> getRequestedProductById(@PathVariable String id) {
         return service.getRequestedProductById(id);
     }
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addRequestedProduct(@RequestBody RequestedProduct requestedProduct) {
         return service.addRequestedProduct(requestedProduct);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateRequestedProduct(@PathVariable String id, @RequestBody RequestedProduct requestedProduct) {
         return service.updateRequestedProduct(id, requestedProduct);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRequestedProduct(@PathVariable String id) {
         return service.deleteRequestedProduct(id);
     }

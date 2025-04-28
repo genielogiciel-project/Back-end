@@ -18,15 +18,15 @@ public class SupplierController {
     public ResponseEntity<?> getSupplierById(@PathVariable String id) {
         return service.getSupplierById(id);
     }
-    @GetMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
         return service.addSupplier(supplier);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateSupplier(@PathVariable String id, @RequestBody Supplier supplier) {
         return service.updateSupplier(id, supplier);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteSupplier(@PathVariable String id) {
         return service.deleteSupplier(id);
     }

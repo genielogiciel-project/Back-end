@@ -18,15 +18,15 @@ public class ResourceRequestController {
     public ResponseEntity<?> getResourceRequestById(@PathVariable String id) {
         return service.getResourceRequestById(id);
     }
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addResourceRequest(@RequestBody ResourceRequest resourceRequest) {
         return service.addResourceRequest(resourceRequest);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateResourceRequest(@PathVariable String id, @RequestBody ResourceRequest resourceRequest) {
         return service.updateResourceRequest(id, resourceRequest);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResourceRequest(@PathVariable String id) {
         return service.deleteResourceRequest(id);
     }

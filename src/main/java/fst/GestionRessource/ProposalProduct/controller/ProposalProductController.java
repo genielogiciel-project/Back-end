@@ -18,15 +18,15 @@ public class ProposalProductController {
     public ResponseEntity<?> getProposalProductById(@PathVariable String id) {
         return service.getProposalProductById(id);
     }
-    @GetMapping("/add")
+    @PostMapping
     public ResponseEntity<?> addProposalProduct(@RequestBody ProposalProduct proposalProduct) {
         return service.addProposalProduct(proposalProduct);
     }
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateProposalProduct(@PathVariable String id, @RequestBody ProposalProduct proposalProduct) {
         return service.updateProposalProduct(id, proposalProduct);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteProposalProduct(@PathVariable String id) {
         return service.deleteProposalProduct(id);
     }
