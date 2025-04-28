@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface SupplierRepository extends JpaRepository<Supplier, String> {
     // For example, to find suppliers by name or other attributes
-    List<Supplier> findByName(String name);
+    Supplier findByCompanyName(String name);
 }
