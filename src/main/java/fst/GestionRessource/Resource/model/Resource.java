@@ -9,8 +9,6 @@ import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -24,7 +22,6 @@ import lombok.ToString;
 @NoArgsConstructor
 @Data
 @ToString(exclude = { "user", "department" })
-@Inheritance(strategy = InheritanceType.JOINED)
 public class Resource {
   @Id
   private String id;
