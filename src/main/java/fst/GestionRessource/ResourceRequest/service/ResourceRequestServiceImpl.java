@@ -3,6 +3,7 @@ package fst.GestionRessource.ResourceRequest.service;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
+import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -80,6 +81,18 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
                 return ResponseEntity.status(404).body("ResourceRequest not found");
             }
             return ResponseEntity.ok(repository.getResourceRequestsByDepartment(dept));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getResourceRequestByUser(User user) {
+        try {
+            if (!repository.existsByTeacher(user)) {
+                return ResponseEntity.status(404).body("ResourceRequest not found");
+            }
+            return ResponseEntity.ok(repository.getResourceRequestsByUser(user));
         }catch (Exception e){
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }

@@ -2,14 +2,7 @@ package fst.GestionRessource.User.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.Department.model.Department;
-import fst.GestionRessource.MaintenanceRecord.model.MaintenanceRecord;
-import fst.GestionRessource.Notification.model.Notification;
-import fst.GestionRessource.PanicReport.model.PanicReport;
-import fst.GestionRessource.Resource.model.Resource;
-import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,8 +21,8 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name="user")
-@JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
+@Table(name = "user")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Inheritance(strategy = InheritanceType.JOINED)
 public class User implements UserDetails {
   @Id
@@ -46,104 +39,56 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private List<Role> role;
 
-  @OneToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "departmentId")
+  @JsonIgnoreProperties({"users", "resources", "resourceRequests"})
   private Department department;
 
-  @JsonIgnoreProperties({"head", "user", "resources", "resourceRequests"})
+  @JsonIgnoreProperties({"head", "resources", "resourceRequests"})
   @OneToOne(mappedBy = "head", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Department departmentHead;
 
-  @OneToMany(mappedBy = "resourceManager", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<CallForTender> callForTenders;
-
-  @JsonIgnoreProperties({"user", "department", "panicReports"})
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Resource> resources;
-
-  @JsonIgnoreProperties({"teacher", "department"})
-  @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<ResourceRequest> resourceRequests;
-
-  @JsonIgnoreProperties({"teacher", "resource", "panicReport"})
-  @OneToMany(mappedBy = "teacher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<PanicReport> panicReports;
-
-  @JsonIgnoreProperties({"user"})
-  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Notification> notifications;
-
-  @JsonIgnoreProperties({"technician", "panicReport"})
-  @OneToMany(mappedBy = "technician", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<MaintenanceRecord> maintenanceRecords;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  @JsonIgnore
   @Override
+  @JsonIgnore
   public Collection<? extends GrantedAuthority> getAuthorities() {
-      return role.stream()
-              .map(role -> new SimpleGrantedAuthority(role.name()))
-              .collect(Collectors.toList());
+    return role.stream()
+            .map(role -> new SimpleGrantedAuthority(role.name()))
+            .collect(Collectors.toList());
   }
 
   @Override
+  @JsonIgnore
   public String getPassword() {
-      return password;
+    return password;
   }
 
-  @JsonIgnore
   @Override
+  @JsonIgnore
   public String getUsername() {
-      return userNumber;
+    return userNumber;
   }
 
-  @JsonIgnore
   @Override
+  @JsonIgnore
   public boolean isAccountNonExpired() {
-      return true;
+    return true;
   }
 
-  @JsonIgnore
   @Override
+  @JsonIgnore
   public boolean isAccountNonLocked() {
-      return true;
+    return true;
   }
 
-  @JsonIgnore
   @Override
+  @JsonIgnore
   public boolean isCredentialsNonExpired() {
-      return true;
+    return true;
   }
 
   @Override
-  public String toString() {
-      return "User{" +
-              "id=" + id +
-              ", userNumber='" + userNumber + '\'' +
-              ", fullName='" + fullName + '\'' +
-              ", password='" + password + '\'' +
-              ", role=" + role +
-              '}';
-  }
-
   @JsonIgnore
-  @Override
   public boolean isEnabled() {
-      return true;
+    return true;
   }
 }

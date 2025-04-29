@@ -1,5 +1,7 @@
 package fst.GestionRessource.User.service;
 
+import fst.GestionRessource.Department.model.Department;
+import fst.GestionRessource.Department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.ResponseEntity;
@@ -13,6 +15,7 @@ import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
+import fst.GestionRessource.Department.service.DepartmentServiceImpl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,17 +28,20 @@ public class UserService {
     // @Autowired
     private final UserRepository repository;
     private final PasswordEncoder passwordEncoder;
+    private final DepartmentServiceImpl DepService;
 
     public List<User> getUsers(){
         return repository.findAll();
     }
     public ResponseEntity<?> addUser(RegisterRequest request) {
-      if (request.getRole().contains(Role.SUPER_ADMIN)) return ResponseEntity.internalServerError().body("Super admin cannot be created.");
+        if (request.getRole().contains(Role.SUPER_ADMIN)) {
+            return ResponseEntity.internalServerError().body("Super admin cannot be created.");
+        }
 
-      Optional<User> existingUser = repository.findByUserNumber(request.getUserNumber());
+        Optional<User> existingUser = repository.findByUserNumber(request.getUserNumber());
 
-      if (existingUser.isPresent()) {
-            return ResponseEntity.status(400).body("User with userNumber already exist.");
+        if (existingUser.isPresent()) {
+            return ResponseEntity.status(400).body("User with userNumber already exists.");
         }
 
         var ID = IdGenerator.generateId("U-");
@@ -55,6 +61,20 @@ public class UserService {
                 .build();
 
         repository.save(user);
+
+        // Check if the user is a DEPARTMENT_HEAD
+        if (request.getRole().contains(Role.DEPARTMENT_HEAD)) {
+            if (user.getDepartment() != null) {
+                Department department = user.getDepartment();
+                department.setHead(user);
+                department.setName(department.getName());
+                // Save the updated department
+
+                DepService.updateDepartment(department.getId(), department);
+            } else {
+                return ResponseEntity.status(400).body("Department must be specified for a DEPARTMENT_HEAD.");
+            }
+        }
 
         return ResponseEntity.ok("User created successfully");
     }
