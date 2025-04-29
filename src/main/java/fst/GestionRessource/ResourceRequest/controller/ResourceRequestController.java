@@ -29,10 +29,14 @@ public class ResourceRequestController {
     }
     @PostMapping
     public ResponseEntity<?> addResourceRequest(@RequestBody ResourceRequest resourceRequest) {
-        return service.addResourceRequest(resourceRequest);
+      // System.out.println(resourceRequest);
+      return service.addResourceRequest(resourceRequest);
     }
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateResourceRequest(@PathVariable String id, @RequestBody ResourceRequest resourceRequest) {
+    public ResponseEntity<?> updateResourceRequest(@PathVariable String id,
+        @RequestBody ResourceRequest resourceRequest) {
+
+          System.out.println(resourceRequest);
         return service.updateResourceRequest(id, resourceRequest);
     }
     @DeleteMapping("/{id}")

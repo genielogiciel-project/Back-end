@@ -1,5 +1,7 @@
 package fst.GestionRessource.RequestedProduct.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.Resource.model.ResourceType;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
@@ -24,6 +26,7 @@ public class RequestedProduct {
   private String specifications;
 
   @ManyToOne
+  @JsonIgnore
   @JoinColumn(name = "resourceRequestId")
   private ResourceRequest resourceRequest;
 

@@ -8,6 +8,8 @@ import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -29,6 +31,7 @@ public class Resource {
   private String type;
   private String brand;
   private String specifications;
+  @Enumerated(EnumType.STRING)
   private ResourceStatus status;
 
   @ManyToOne

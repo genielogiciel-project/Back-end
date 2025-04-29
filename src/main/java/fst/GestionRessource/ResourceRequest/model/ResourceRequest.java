@@ -6,7 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.User.model.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,15 +26,17 @@ public class ResourceRequest {
   private String id;
   private Status status;
 
-  @OneToMany(mappedBy = "resourceRequest")
-  @JsonIgnoreProperties({"proposal"})
+  @OneToMany(mappedBy = "resourceRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnoreProperties({"proposal", "callForTender"})
   private List<RequestedProduct> requestedProducts;
 
   @ManyToOne
   @JoinColumn(name = "teacherId")
+  @JsonIgnoreProperties({"departmentHead"})
   private User teacher;
 
   @ManyToOne
   @JoinColumn(name = "departmentId")
+  @JsonIgnoreProperties({"users", "resources", "resourceRequests"})
   private Department department;
 }
