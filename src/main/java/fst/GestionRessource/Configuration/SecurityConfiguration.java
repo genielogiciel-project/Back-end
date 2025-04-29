@@ -25,18 +25,18 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityConfiguration {
 
     private final JwtAuthenticationFilter jwtAuthFilter;
-    private final AuthenticationProvider  authenticationProvider;
+    private final AuthenticationProvider authenticationProvider;
 
     /* === Endpoints ======================================================= */
 
-    private static final String AUTH_PATH        = "/api/auth/**";
-    private static final String USERS_PATH       = "/api/user/**";
-    private static final String RESOURCES_PATH   = "/api/resource/**";
-    private static final String SUPPLIER_PATH    = "/api/supplier/**";
-    private static final String PANIC_PATH       = "/api/panic-reports/**";
-    private static final String PROPOSALS_PATH   = "/api/proposal/**";
-    private static final String TENDERS_PATH     = "/api/tender/**";
-    private static final String REQUESTS_PATH    = "/api/resource-request/**";
+    private static final String AUTH_PATH      = "/api/auth/**";
+    private static final String USERS_PATH     = "/api/user/**";
+    private static final String RESOURCES_PATH = "/api/resource/**";
+    private static final String SUPPLIER_PATH  = "/api/supplier/**";
+    private static final String PANIC_PATH     = "/api/panic-reports/**";
+    private static final String PROPOSALS_PATH = "/api/proposal/**";
+    private static final String TENDERS_PATH   = "/api/tender/**";
+    private static final String REQUESTS_PATH  = "/api/resource-request/**";
 
     /* === Security filter chain ========================================== */
 
@@ -51,40 +51,38 @@ public class SecurityConfiguration {
                 /* ---- Authorisation ----------------------------------------- */
                 .authorizeHttpRequests(auth -> auth
 
-                        /* --- 1. PUBLIC ----------------------------------------- */
+                        /* --- 1. SUPER-ADMIN -------------------------------------- */
+                        .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
+                        .requestMatchers("/api/**").hasAuthority(Role.SUPER_ADMIN.name())
+
+                        /* --- 2. PUBLIC ------------------------------------------- */
                         .requestMatchers(AUTH_PATH).permitAll()
 
-                        /* --- 2. ENSEIGNANT ------------------------------------- */
+                        /* --- 3. ENSEIGNANT --------------------------------------- */
                         .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAuthority(Role.TEACHER.name())
                         .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAuthority(Role.TEACHER.name())
 
-                        /* --- 3. DÉPARTEMENT & ENSEIGNANT (lecture ressources) -- */
+                        /* --- 4. DÉPARTEMENT & ENSEIGNANT (lecture ressources) ---- */
                         .requestMatchers(HttpMethod.GET, RESOURCES_PATH)
                         .hasAnyAuthority(Role.TEACHER.name(),
                                 Role.DEPARTMENT_HEAD.name(),
                                 Role.RESOURCE_MANAGER.name())
 
-                        /* --- 4. FOURNISSEUR ------------------------------------ */
+                        /* --- 5. FOURNISSEUR -------------------------------------- */
                         .requestMatchers(HttpMethod.POST, PROPOSALS_PATH).hasAuthority(Role.SUPPLIER.name())
                         .requestMatchers(SUPPLIER_PATH).hasAuthority(Role.SUPPLIER.name())
 
-                        /* --- 5. RESOURCE MANAGER ------------------------------- */
+                        /* --- 6. RESOURCE MANAGER --------------------------------- */
                         .requestMatchers(HttpMethod.POST, RESOURCES_PATH).hasAuthority(Role.RESOURCE_MANAGER.name())
-                        .requestMatchers(PANIC_PATH, PROPOSALS_PATH,
-                                TENDERS_PATH, REQUESTS_PATH)
+                        .requestMatchers(PANIC_PATH, PROPOSALS_PATH, TENDERS_PATH, REQUESTS_PATH)
                         .hasAuthority(Role.RESOURCE_MANAGER.name())
 
-                        /* --- 6. SUPER-ADMIN (fallback) ------------------------- */
-                        .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
-                        .requestMatchers("/api/**").hasAuthority(Role.SUPER_ADMIN.name())
-
-                        /* --- 7. TOUT LE RESTE ---------------------------------- */
+                        /* --- 7. TOUT LE RESTE ------------------------------------ */
                         .anyRequest().authenticated()
                 )
 
                 /* ---- Stateless session / JWT ------------------------------ */
-                .sessionManagement(session ->
-                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
