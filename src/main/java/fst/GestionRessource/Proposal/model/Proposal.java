@@ -3,6 +3,7 @@ package fst.GestionRessource.Proposal.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.ProposalProduct.model.ProposalProduct;
 import fst.GestionRessource.Supplier.model.Supplier;
@@ -34,6 +35,7 @@ public class Proposal {
   private Supplier supplier;
 
   @OneToMany(mappedBy = "proposal", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnoreProperties({"proposal"})
   private List<ProposalProduct> proposalProducts;
 
   @ManyToOne

@@ -3,6 +3,7 @@ package fst.GestionRessource.CallForTender.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Proposal.model.Proposal;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.User.model.User;
@@ -41,5 +42,6 @@ public class CallForTender {  // Appel d'offre
   // private Proposal selectedProposal;
 
   @OneToMany(mappedBy = "callForTender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JsonIgnoreProperties({"user", "department"})
   private List<Proposal> proposals;
 }

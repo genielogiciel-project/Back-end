@@ -2,6 +2,7 @@ package fst.GestionRessource.Resource.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.Supplier.model.Supplier;
@@ -45,5 +46,6 @@ public class Resource {
   private Department department;
 
   @OneToMany(mappedBy = "resource")
+  @JsonIgnoreProperties({"user", "department"})
   private List<PanicReport> panicReports;
 }

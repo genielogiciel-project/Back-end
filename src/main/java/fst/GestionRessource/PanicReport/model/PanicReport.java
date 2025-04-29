@@ -2,6 +2,7 @@ package fst.GestionRessource.PanicReport.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.MaintenanceRecord.model.MaintenanceRecord;
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.User.model.User;
@@ -38,5 +39,6 @@ public class PanicReport {
   private Resource resource;
 
   @OneToOne(mappedBy = "panicReport")
+  @JsonIgnoreProperties({"maintenanceRecord"})
   private MaintenanceRecord maintenanceRecord;
 }

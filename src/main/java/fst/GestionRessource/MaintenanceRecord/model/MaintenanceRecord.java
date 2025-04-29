@@ -2,6 +2,7 @@ package fst.GestionRessource.MaintenanceRecord.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.Entity;
@@ -29,5 +30,6 @@ public class MaintenanceRecord {
 
   @OneToOne
   @JoinColumn(name = "panicReportId", referencedColumnName = "id")
+  @JsonIgnoreProperties({"maintenanceRecord"})
   private PanicReport panicReport;
 }

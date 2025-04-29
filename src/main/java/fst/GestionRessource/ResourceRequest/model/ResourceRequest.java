@@ -2,6 +2,7 @@ package fst.GestionRessource.ResourceRequest.model;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.Resource.model.ResourceType;
@@ -26,6 +27,7 @@ public class ResourceRequest {
   private Status status;
 
   @OneToMany(mappedBy = "resourceRequest")
+  @JsonIgnoreProperties({"proposal"})
   private List<RequestedProduct> requestedProducts;
 
   @ManyToOne
