@@ -1,17 +1,23 @@
 package fst.GestionRessource.ResourceRequest.controller;
 
+import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.service.ResourceRequestServiceImpl;
+import fst.GestionRessource.User.model.User;
+import fst.GestionRessource.User.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/resource-request")
 public class ResourceRequestController {
     private final ResourceRequestServiceImpl service;
-
-    public ResourceRequestController(ResourceRequestServiceImpl service) {
+    private final UserService userService;
+    public ResourceRequestController(ResourceRequestServiceImpl service, UserService userService) {
         this.service = service;
+        this.userService = userService;
     }
 
     @GetMapping
@@ -33,5 +39,13 @@ public class ResourceRequestController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResourceRequest(@PathVariable String id) {
         return service.deleteResourceRequest(id);
+    }
+    //getting all the department requests
+    @GetMapping("/by-dept/{userId}")
+    public ResponseEntity<?> getResourceRequestsByDepartment(@PathVariable String userId) {
+        ResponseEntity<?> temp = userService.getUser(userId);
+        Department dept = temp.getBody() != null ? ((User) temp.getBody()).getDepartment() : null;
+
+        return service.getResourceRequestByDept(dept);
     }
 }

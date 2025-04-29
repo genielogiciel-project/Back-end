@@ -1,5 +1,6 @@
 package fst.GestionRessource.ResourceRequest.service;
 
+import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import org.springframework.http.ResponseEntity;
 
@@ -14,4 +15,6 @@ public interface ResourceRequestService
     public ResponseEntity<?> updateResourceRequest(String id, ResourceRequest resourceRequest);
 
     public ResponseEntity<?> deleteResourceRequest(String id);
+
+    public ResponseEntity<?> getResourceRequestByDept(Department dept);
 }

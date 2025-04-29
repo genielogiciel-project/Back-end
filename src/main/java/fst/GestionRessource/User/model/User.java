@@ -10,19 +10,7 @@ import fst.GestionRessource.Notification.model.Notification;
 import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -55,6 +43,7 @@ public class User implements UserDetails {
   @JsonIgnore
   private String password;
 
+  @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   private List<Role> role;
 

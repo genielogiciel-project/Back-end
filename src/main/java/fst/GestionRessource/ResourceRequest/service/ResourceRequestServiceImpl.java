@@ -1,5 +1,6 @@
 package fst.GestionRessource.ResourceRequest.service;
 
+import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
 import fst.GestionRessource.Utils.IdGenerator;
@@ -70,6 +71,18 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
             return ResponseEntity.status(500).body("Unexpected error occurred ");
         }catch (Exception e){
             return ResponseEntity.status(500).body("An error occurred" + e.getMessage());
+        }
+    }
+
+    @Override
+    public ResponseEntity<?> getResourceRequestByDept(Department dept) {
+        try {
+            if (!repository.existsByDepartment(dept)) {
+                return ResponseEntity.status(404).body("ResourceRequest not found");
+            }
+            return ResponseEntity.ok(repository.getResourceRequestsByDepartment(dept));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
 }
