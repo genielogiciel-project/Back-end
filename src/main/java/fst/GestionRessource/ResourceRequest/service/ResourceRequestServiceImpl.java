@@ -138,4 +138,16 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
+
+    @Override
+    public ResponseEntity<?> getResourceRequestByStatus(String status) {
+        try {
+            if (!repository.existsByStatus(status)) {
+                return ResponseEntity.status(404).body("ResourceRequest not found");
+            }
+            return ResponseEntity.ok(repository.getResourceRequestsByStatus(status));
+        }catch (Exception e){
+            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+        }
+    }
 }
