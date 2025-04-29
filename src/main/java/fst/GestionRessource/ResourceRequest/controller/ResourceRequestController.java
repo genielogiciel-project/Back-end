@@ -47,4 +47,11 @@ public class ResourceRequestController {
 
         return service.getResourceRequestByDept(dept);
     }
+    @GetMapping("/by-user/{userId}")
+    public ResponseEntity<?> getResourceRequestsByUser(@PathVariable String userId) {
+        ResponseEntity<?> temp = userService.getUser(userId);
+        User user = temp.getBody() != null ? (User) temp.getBody() : null;
+
+        return service.getResourceRequestByUser(user);
+    }
 }
