@@ -5,7 +5,6 @@ import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
-import fst.GestionRessource.Resource.model.ResourceType;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -23,7 +22,6 @@ import lombok.NoArgsConstructor;
 public class ResourceRequest {
   @Id
   private String id;
-  private ResourceType type;
   private Status status;
 
   @OneToMany(mappedBy = "resourceRequest")

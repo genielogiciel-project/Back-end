@@ -51,7 +51,6 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
             var existingRequest = repository.findById(id);
             if (existingRequest.isPresent()) {
                 existingRequest.get().setStatus(resourceRequest.getStatus());
-                existingRequest.get().setType(resourceRequest.getType());
                 existingRequest.get().setRequestedProducts(resourceRequest.getRequestedProducts());// Might not be needed
                 return ResponseEntity.ok("ResourceRequest updated successfully");
             }
