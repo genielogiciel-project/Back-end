@@ -16,14 +16,19 @@ public class AuthenticationController {
     public ResponseEntity<?> authenticate(
             @RequestBody AuthenticationRequest request
     ) {
-        try {
-            return ResponseEntity.ok(service.authenticate(request));
-        }
-        catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+      try {
+        return ResponseEntity.ok(service.authenticate(request));
+      } catch (Exception e) {
+        return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
 
-        }
+      }
+    }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(
+            @RequestBody AuthenticationRequest request
+    ) {
+        return ResponseEntity.ok(service.refresh(request));
     }
 
     @GetMapping("/hello")

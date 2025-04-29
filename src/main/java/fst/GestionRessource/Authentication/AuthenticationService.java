@@ -21,23 +21,32 @@ public class AuthenticationService {
 
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUserNumber(),
-                        request.getPassword()
-                )
-        );
+      authenticationManager.authenticate(
+          new UsernamePasswordAuthenticationToken(
+              request.getUserNumber(),
+              request.getPassword()));
 
-        var user = repository.findByUserNumber(request.getUserNumber())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
-        //var refreshToken = jwtService.generateRefreshToken(user);
-        //revokeAllUserTokens(user);
-        //saveUserToken(user, jwtToken);
-        return AuthenticationResponse.builder()
-                .accessToken(jwtToken)
-                .user(user)
-                //.refreshToken(refreshToken)
-                .build();
+      var user = repository.findByUserNumber(request.getUserNumber())
+          .orElseThrow();
+      var jwtToken = jwtService.generateToken(user);
+      //var refreshToken = jwtService.generateRefreshToken(user);
+      //revokeAllUserTokens(user);
+      //saveUserToken(user, jwtToken);
+      return AuthenticationResponse.builder()
+          .accessToken(jwtToken)
+          .user(user)
+          //.refreshToken(refreshToken)
+          .build();
+    }
+
+    public AuthenticationResponse refresh(AuthenticationRequest request) {
+      var user = repository.findByUserNumber(request.getUserNumber()).orElseThrow();
+      var jwtToken = jwtService.generateToken(user);
+
+
+      return AuthenticationResponse.builder()
+          .accessToken(jwtToken)
+          .user(user)
+          .build();
     }
 }

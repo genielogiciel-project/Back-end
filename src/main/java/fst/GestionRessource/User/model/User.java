@@ -52,7 +52,7 @@ public class User implements UserDetails {
 
   private String fullName;
 
-  // @JsonIgnore
+  @JsonIgnore
   private String password;
 
   @Enumerated(EnumType.STRING)
