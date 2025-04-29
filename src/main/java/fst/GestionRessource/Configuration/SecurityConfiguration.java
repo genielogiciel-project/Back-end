@@ -51,12 +51,13 @@ public class SecurityConfiguration {
                 /* ---- Authorisation ----------------------------------------- */
                 .authorizeHttpRequests(auth -> auth
 
-                        /* --- 1. SUPER-ADMIN -------------------------------------- */
+                        /* --- 1. PUBLIC ------------------------------------------- */
+                        .requestMatchers(AUTH_PATH).permitAll()
+
+                        /* --- 2. SUPER-ADMIN -------------------------------------- */
                         .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
                         .requestMatchers("/api/**").hasAuthority(Role.SUPER_ADMIN.name())
 
-                        /* --- 2. PUBLIC ------------------------------------------- */
-                        .requestMatchers(AUTH_PATH).permitAll()
 
                         /* --- 3. ENSEIGNANT --------------------------------------- */
                         .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAuthority(Role.TEACHER.name())
