@@ -43,7 +43,6 @@ public class User implements UserDetails {
   @JsonIgnore
   private String password;
 
-  @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
   @Enumerated(EnumType.STRING)
   private List<Role> role;
 
