@@ -9,6 +9,9 @@ import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository
 import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
+
+import java.time.LocalDate;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +49,7 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
             }
             resourceRequest.setId(ID);
             resourceRequest.setStatus(Status.SUBMITTED);
+            resourceRequest.setCreatedAt(LocalDate.now());
             resourceRequest.setRequestedProducts(null);
             repository.save(resourceRequest);
 

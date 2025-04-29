@@ -1,5 +1,6 @@
 package fst.GestionRessource.ResourceRequest.model;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -25,6 +26,7 @@ public class ResourceRequest {
   @Id
   private String id;
   private Status status;
+  private LocalDate createdAt;
 
   @OneToMany(mappedBy = "resourceRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   @JsonIgnoreProperties({"proposal", "callForTender"})
