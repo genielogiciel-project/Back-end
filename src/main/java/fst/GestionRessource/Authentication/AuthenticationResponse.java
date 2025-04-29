@@ -1,7 +1,5 @@
 package fst.GestionRessource.Authentication;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import fst.GestionRessource.User.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,9 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AuthenticationResponse {
-    @JsonProperty("access_token")
     private String accessToken;
-    @JsonProperty("user")
     private User user;
     /*@JsonProperty("refresh_token")
     private String refreshToken;*/

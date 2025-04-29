@@ -3,19 +3,18 @@ package fst.GestionRessource.Supplier.service;
 import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.Supplier.repository.SupplierRepository;
 import fst.GestionRessource.Utils.IdGenerator;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class SupplierServiceImpl implements SupplierService {
     // Assuming you have a SupplierRepository injected here
-
+    @Autowired
     private final SupplierRepository supplierRepository;
-
-    public SupplierServiceImpl(SupplierRepository supplierRepository) {
-        this.supplierRepository = supplierRepository;
-    }
 
     @Override
     public ResponseEntity<?> getAllSuppliers() {
