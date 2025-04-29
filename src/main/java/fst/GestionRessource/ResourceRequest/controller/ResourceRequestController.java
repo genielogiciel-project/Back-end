@@ -54,4 +54,8 @@ public class ResourceRequestController {
 
         return service.getResourceRequestByUser(user);
     }
+    @GetMapping("/by-status/{status}")
+    public ResponseEntity<?> getResourceRequestsByStatus(@PathVariable String status) {
+        return service.getResourceRequestByStatus(status);
+    }
 }

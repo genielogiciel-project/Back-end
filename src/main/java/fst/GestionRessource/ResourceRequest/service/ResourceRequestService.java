@@ -20,4 +20,6 @@ public interface ResourceRequestService
     public ResponseEntity<?> getResourceRequestByDept(Department dept);
 
     public ResponseEntity<?> getResourceRequestByUser(User user);
+
+    public ResponseEntity<?> getResourceRequestByStatus(String status);
 }
