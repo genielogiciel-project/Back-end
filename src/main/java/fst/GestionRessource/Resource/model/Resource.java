@@ -29,6 +29,7 @@ public class Resource {
   private String type;
   private String brand;
   private String specifications;
+  private ResourceStatus status;
 
   @ManyToOne
   @JoinColumn(name = "supplierId")

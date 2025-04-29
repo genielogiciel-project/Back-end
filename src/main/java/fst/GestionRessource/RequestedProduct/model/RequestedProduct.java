@@ -21,6 +21,7 @@ public class RequestedProduct {
   private ResourceType type;
   private String brand;
   private Integer quantity;
+  private String specifications;
 
   @ManyToOne
   @JoinColumn(name = "resourceRequestId")
