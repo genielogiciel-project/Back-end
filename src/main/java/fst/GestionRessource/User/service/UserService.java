@@ -17,10 +17,7 @@ import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 import fst.GestionRessource.Department.service.DepartmentServiceImpl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -139,7 +136,7 @@ public class UserService {
       }
   }
   public ResponseEntity<?> getAllTeachers() {
-    var teachers = repository.findAllByRole(Role.TEACHER);
+    var teachers = repository.findAllByRole(List.of(Role.TEACHER));
     if (teachers.isEmpty()) {
         return ResponseEntity.status(404).body("No teachers found");
     }
