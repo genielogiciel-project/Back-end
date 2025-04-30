@@ -4,6 +4,7 @@ import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.Department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,6 +19,7 @@ import fst.GestionRessource.Utils.IdGenerator;
 import fst.GestionRessource.Department.service.DepartmentServiceImpl;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -106,13 +108,12 @@ public class UserService {
       Optional<User> existingUserNumber = repository.findByUserNumber(user.getUserNumber());
 
       if (existingUserNumber.isPresent() && existingUserNumber.get().getId() != id) {
-          String message = "User with userNumber already exist.";
+        String message = "User with userNumber already exist.";
 
-          Map<String, Object> response = new HashMap<>();
-          response.put("message", message);
-          return ResponseEntity.internalServerError().body(response);
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", message);
+        return ResponseEntity.internalServerError().body(response);
       }
-
 
       if (existUser != null) {
         if (user.getFullName() != null)
@@ -134,12 +135,13 @@ public class UserService {
       } else {
         return ResponseEntity.status(404).body("User not found");
       }
-  }
-  public ResponseEntity<?> getAllTeachers() {
-    var teachers = repository.findAllByRole(List.of(Role.TEACHER));
-    if (teachers.isEmpty()) {
-        return ResponseEntity.status(404).body("No teachers found");
     }
-    return ResponseEntity.ok(teachers);
-  }
+
+    public ResponseEntity<?> getAllTeachers() {
+      var teachers = repository.findAll().stream().filter(user -> user.getRole().contains(Role.TEACHER)).collect(Collectors.toList());
+      if (teachers.isEmpty()) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No teachers found");
+      }
+      return ResponseEntity.ok(teachers);
+    }
 }
