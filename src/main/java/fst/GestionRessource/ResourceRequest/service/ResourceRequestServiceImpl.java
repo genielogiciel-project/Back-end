@@ -11,6 +11,7 @@ import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -146,10 +147,16 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
     @Override
     public ResponseEntity<?> getResourceRequestByStatus(Status status) {
         try {
-            if (!repository.existsByStatus(status)) {
-                return ResponseEntity.status(404).body("ResourceRequest not found");
-            }
-            return ResponseEntity.ok(repository.getResourceRequestsByStatus(status));
+          if (!repository.existsByStatus(status)) {
+            return ResponseEntity.status(404).body("ResourceRequest not found");
+          }
+          var requests = repository.getResourceRequestsByStatus(status);
+          var products = new ArrayList<>();
+          for (var request : requests) {
+            products.addAll(request.getRequestedProducts());
+          }
+
+          return ResponseEntity.ok(products);
         }catch (Exception e){
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }

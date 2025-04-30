@@ -25,7 +25,7 @@ import lombok.NoArgsConstructor;
 public class CallForTender {  // Appel d'offre
   @Id
   private String id;
-
+  private String title;
   @OneToMany(mappedBy = "callForTender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<RequestedProduct> requestedProducts;
 

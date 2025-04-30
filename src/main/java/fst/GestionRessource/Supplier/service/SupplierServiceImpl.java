@@ -62,6 +62,15 @@ public class SupplierServiceImpl implements SupplierService {
             }
             Supplier existingSupplier = supplierRepository.findById(id).orElse(null);
             if (existingSupplier != null) {
+              if (supplier.getFullName() != null && !supplier.getFullName().isEmpty()) {
+                existingSupplier.setFullName(supplier.getFullName());
+              }
+              if (supplier.getUserNumber() != null && !supplier.getUserNumber().isEmpty()) {
+                existingSupplier.setUserNumber(supplier.getUserNumber());
+              }
+              if (supplier.getPassword() != null && !supplier.getPassword().isEmpty()) {
+                existingSupplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
+              }
                 existingSupplier.setCompanyName(supplier.getCompanyName());
                 existingSupplier.setAddress(supplier.getAddress());
                 existingSupplier.setWebsite(supplier.getWebsite());
@@ -71,6 +80,7 @@ public class SupplierServiceImpl implements SupplierService {
                 existingSupplier.setResources(supplier.getResources());
                 // Update other fields as necessary
                 supplierRepository.save(existingSupplier);
+                // System.out.println(existingSupplier);
                 return ResponseEntity.ok("Supplier updated successfully");
             }
             return ResponseEntity.ok("Unexpected error occurred, Supplier not found");
