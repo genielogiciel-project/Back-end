@@ -2,6 +2,7 @@ package fst.GestionRessource.Resource.service;
 
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.Resource.repository.ResourceRepository;
+import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 
 import org.springframework.stereotype.Service;
@@ -13,9 +14,11 @@ import java.util.Optional;
 public class ResourceServiceImpl implements ResourceService {
 
     private final ResourceRepository resourceRepository;
+    private final UserRepository userRepository;
 
-    public ResourceServiceImpl(ResourceRepository resourceRepository) {
+    public ResourceServiceImpl(ResourceRepository resourceRepository, UserRepository userRepository) {
         this.resourceRepository = resourceRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -55,5 +58,11 @@ public class ResourceServiceImpl implements ResourceService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public List<Resource> getResourcesByUser(String userId) {
+
+        return resourceRepository.getResourcesByUser(userRepository.findById(userId).orElse(null));
     }
 }

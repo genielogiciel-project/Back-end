@@ -15,4 +15,6 @@ public interface ResourceService {
     Optional<Resource> updateResource(String id, Resource resource);
 
     boolean deleteResource(String id);
+
+    List<Resource> getResourcesByUser(String userId);
 }

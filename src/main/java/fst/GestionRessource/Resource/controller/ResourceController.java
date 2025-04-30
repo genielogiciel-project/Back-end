@@ -48,4 +48,8 @@ public class ResourceController {
         }
         return ResponseEntity.notFound().build();
     }
+    @GetMapping("/by-user")
+    public ResponseEntity<List<Resource>> getResourcesByUser(@RequestParam String userId) {
+        return ResponseEntity.ok(resourceService.getResourcesByUser(userId));
+    }
 }
