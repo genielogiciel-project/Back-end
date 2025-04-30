@@ -2,6 +2,7 @@ package fst.GestionRessource.CallForTender.service;
 
 import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.CallForTender.repository.CallForTenderRepository;
+
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +24,23 @@ public class CallForTenderServiceImpl implements CallForTenderService {
     public ResponseEntity<?> getAllCallForTenders() {
         // return ResponseEntity.ok(callForTenderList);
         return ResponseEntity.ok(callForTenderRepository.findAll());
+
     }
 
     @Override
     public ResponseEntity<?> getCallForTenderById(String id) {
-        // Optional<CallForTender> callForTender = callForTenderList.stream()
-        //         .filter(c -> c.getId().equals(id))
-        //         .findFirst();
-        // return callForTender.map(ResponseEntity::ok)
-        //         .orElse(ResponseEntity.notFound().build());
-        return ResponseEntity.ok(callForTenderRepository.findById(id));
+
+      // Optional<CallForTender> callForTender = callForTenderList.stream()
+      //         .filter(c -> c.getId().equals(id))
+      //         .findFirst();
+      // return callForTender.map(ResponseEntity::ok)
+      //         .orElse(ResponseEntity.notFound().build());
+      return ResponseEntity.ok(callForTenderRepository.findById(id));
     }
 
     @Override
     public ResponseEntity<?> addCallForTender(CallForTender callForTender) {
+
       // callForTenderList.add(callForTender);
         var ID = IdGenerator.generateId("CFT-");
         while (callForTenderRepository.existsById(ID)) {
@@ -89,7 +93,11 @@ public class CallForTenderServiceImpl implements CallForTenderService {
 
     @Override
     public ResponseEntity<?> deleteCallForTender(String id) {
-        callForTenderRepository.deleteById(id);
-        return ResponseEntity.ok("Call for Tender deleted successfully.");
+
+        if (callForTenderRepository.existsById(id)) {
+            callForTenderRepository.deleteById(id);
+            return ResponseEntity.ok("Call for Tender deleted successfully.");
+        }
+        return ResponseEntity.notFound().build();
     }
 }
