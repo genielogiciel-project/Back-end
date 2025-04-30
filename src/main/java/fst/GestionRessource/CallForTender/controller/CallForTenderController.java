@@ -32,7 +32,7 @@ public class CallForTenderController {
 
     @PostMapping
     public ResponseEntity<?> addCallForTender(@RequestBody CallForTender callForTender) {
-        return service.addCallForTender(callForTender);
+      return service.addCallForTender(callForTender);
     }
 
     @PutMapping("/{id}")
