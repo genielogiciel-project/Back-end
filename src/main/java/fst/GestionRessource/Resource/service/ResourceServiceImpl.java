@@ -2,6 +2,8 @@ package fst.GestionRessource.Resource.service;
 
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.Resource.repository.ResourceRepository;
+import fst.GestionRessource.Utils.IdGenerator;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +30,13 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public Resource addResource(Resource resource) {
-        return resourceRepository.save(resource);
+      var ID = IdGenerator.generateId("RES-");
+      while (resourceRepository.existsById(ID)) {
+        ID = IdGenerator.generateId("RES-");
+      }
+      resource.setId(ID);
+
+      return resourceRepository.save(resource);
     }
 
     @Override

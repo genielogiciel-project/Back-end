@@ -45,10 +45,12 @@ public class Resource {
 
   @ManyToOne
   @JoinColumn(name = "assignedToUser")
+  @JsonIgnoreProperties({"departmentHead"})
   private User user;
 
   @ManyToOne
   @JoinColumn(name = "assignedToDepartment")
+  @JsonIgnoreProperties({"users", "resources", "resourceRequests"})
   private Department department;
 
   @OneToMany(mappedBy = "resource")
