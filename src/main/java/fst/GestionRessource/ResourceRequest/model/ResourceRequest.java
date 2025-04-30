@@ -9,6 +9,8 @@ import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
@@ -25,6 +27,7 @@ import lombok.NoArgsConstructor;
 public class ResourceRequest {
   @Id
   private String id;
+  @Enumerated(EnumType.STRING)
   private Status status;
   private LocalDate createdAt;
 
