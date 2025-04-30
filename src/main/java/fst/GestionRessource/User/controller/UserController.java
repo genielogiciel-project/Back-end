@@ -41,4 +41,9 @@ public class UserController {
     public ResponseEntity<?> getAllTeachers() {
         return service.getAllTeachers();
     }
+
+    @GetMapping("/techs")
+    public ResponseEntity<?> getAllTechs() {
+        return service.getAllTechs();
+    }
 }

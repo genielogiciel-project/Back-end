@@ -144,4 +144,12 @@ public class UserService {
       }
       return ResponseEntity.ok(teachers);
     }
+
+    public ResponseEntity<?> getAllTechs() {
+        var teachers = repository.findAll().stream().filter(user -> user.getRole().contains(Role.TECHNICIAN)).collect(Collectors.toList());
+        if (teachers.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No teachers found");
+        }
+        return ResponseEntity.ok(teachers);
+    }
 }
