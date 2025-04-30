@@ -10,16 +10,14 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AllArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
+@RequiredArgsConstructor
 public class Supplier extends User {
 	private String companyName;
 	private String address;
@@ -31,4 +29,5 @@ public class Supplier extends User {
   @JsonIgnoreProperties({"supplier"})
   @OneToMany(mappedBy = "supplier", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Resource> resources;
+
 }

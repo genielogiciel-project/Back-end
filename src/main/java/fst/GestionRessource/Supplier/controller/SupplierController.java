@@ -2,6 +2,7 @@ package fst.GestionRessource.Supplier.controller;
 
 import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.Supplier.service.SupplierServiceImpl;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,9 @@ public class SupplierController {
     }
     @PostMapping
     public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
-        return service.addSupplier(supplier);
+        System.out.println("Received supplier: " + supplier.getPassword());  // Check if password is correctly set
+        service.addSupplier(supplier);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Supplier created successfully");
     }
     @PutMapping("/{id}")
     public ResponseEntity<?> updateSupplier(@PathVariable String id, @RequestBody Supplier supplier) {
