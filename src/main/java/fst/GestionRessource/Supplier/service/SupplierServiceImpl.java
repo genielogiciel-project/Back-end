@@ -2,11 +2,13 @@ package fst.GestionRessource.Supplier.service;
 
 import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.Supplier.repository.SupplierRepository;
+import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -15,6 +17,8 @@ public class SupplierServiceImpl implements SupplierService {
     // Assuming you have a SupplierRepository injected here
     @Autowired
     private final SupplierRepository supplierRepository;
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public ResponseEntity<?> getAllSuppliers() {
@@ -41,6 +45,8 @@ public class SupplierServiceImpl implements SupplierService {
                 ID = IdGenerator.generateId("SUP-");
             }
             supplier.setId(ID);
+            System.out.println(supplier.getPassword());
+            supplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
             supplierRepository.save(supplier);
             return ResponseEntity.ok("Supplier created successfully");
         } catch (Exception e) {
