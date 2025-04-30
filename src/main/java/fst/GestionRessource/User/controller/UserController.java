@@ -37,4 +37,8 @@ public class UserController {
     public ResponseEntity<?> updateUser(@PathVariable String id, @RequestBody RegisterRequest user) {
         return service.updateUser(id, user);
     }
+    @GetMapping("/teachers")
+    public ResponseEntity<?> getAllTeachers() {
+        return service.getAllTeachers();
+    }
 }

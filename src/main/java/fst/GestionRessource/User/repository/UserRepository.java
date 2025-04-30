@@ -1,5 +1,6 @@
 package fst.GestionRessource.User.repository;
 
+import fst.GestionRessource.User.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -12,6 +13,7 @@ public interface UserRepository extends JpaRepository<User,String> {
 
     Optional<User> findByUserNumber(String userNumber);
     User findUserById(String id);
+    Optional<User> findAllByRole(Role role);
 
 
 }

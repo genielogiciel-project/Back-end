@@ -138,4 +138,11 @@ public class UserService {
         return ResponseEntity.status(404).body("User not found");
       }
   }
+  public ResponseEntity<?> getAllTeachers() {
+    var teachers = repository.findAllByRole(Role.TEACHER);
+    if (teachers.isEmpty()) {
+        return ResponseEntity.status(404).body("No teachers found");
+    }
+    return ResponseEntity.ok(teachers);
+  }
 }
