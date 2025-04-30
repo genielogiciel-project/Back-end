@@ -2,6 +2,7 @@ package fst.GestionRessource.ResourceRequest.controller;
 
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
+import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.service.ResourceRequestServiceImpl;
 import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.User.service.UserService;
@@ -60,6 +61,7 @@ public class ResourceRequestController {
     }
     @GetMapping("/by-status/{status}")
     public ResponseEntity<?> getResourceRequestsByStatus(@PathVariable String status) {
-        return service.getResourceRequestByStatus(status);
+        Status statusEnum = Status.valueOf(status.toUpperCase());
+        return service.getResourceRequestByStatus(statusEnum);
     }
 }

@@ -2,6 +2,7 @@ package fst.GestionRessource.ResourceRequest.repository;
 
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
+import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.User.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -21,8 +22,8 @@ public interface ResourceRequestRepository extends JpaRepository<ResourceRequest
     boolean existsByTeacher(User teacher);
 
     @Query("SELECT r FROM ResourceRequest r WHERE r.status = ?1")
-    List<ResourceRequest> getResourceRequestsByStatus(String status);
+    List<ResourceRequest> getResourceRequestsByStatus(Status status);
 
-    boolean existsByStatus(String status);
+    boolean existsByStatus(Status status);
 
 }

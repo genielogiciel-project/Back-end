@@ -2,6 +2,7 @@ package fst.GestionRessource.ResourceRequest.service;
 
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
+import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.User.model.User;
 import org.springframework.http.ResponseEntity;
 
@@ -21,5 +22,5 @@ public interface ResourceRequestService
 
     public ResponseEntity<?> getResourceRequestByUser(User user);
 
-    public ResponseEntity<?> getResourceRequestByStatus(String status);
+    public ResponseEntity<?> getResourceRequestByStatus(Status status);
 }

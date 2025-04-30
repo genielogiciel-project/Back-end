@@ -144,7 +144,7 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
     }
 
     @Override
-    public ResponseEntity<?> getResourceRequestByStatus(String status) {
+    public ResponseEntity<?> getResourceRequestByStatus(Status status) {
         try {
             if (!repository.existsByStatus(status)) {
                 return ResponseEntity.status(404).body("ResourceRequest not found");
