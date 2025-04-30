@@ -4,6 +4,7 @@ import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.CallForTender.repository.CallForTenderRepository;
 import fst.GestionRessource.RequestedProduct.repository.RequestedProductRepository;
 import fst.GestionRessource.ResourceRequest.model.Status;
+import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
@@ -21,6 +22,9 @@ public class CallForTenderServiceImpl implements CallForTenderService {
 
   @Autowired
   private final RequestedProductRepository requestedProductRepository;
+
+  @Autowired
+  private final ResourceRequestRepository resourceRequestRepository;
     // private final List<CallForTender> callForTenderList = new ArrayList<>();
 
     @Override
@@ -52,8 +56,12 @@ public class CallForTenderServiceImpl implements CallForTenderService {
         callForTender.setId(ID);
         var savedCallForTender = callForTenderRepository.save(callForTender);
         callForTender.getRequestedProducts().forEach(product -> product.getResourceRequest().setStatus(Status.SENT));
+        callForTender.setRequestedProducts(callForTender.getRequestedProducts());
+        callForTender.getRequestedProducts().forEach(product -> resourceRequestRepository.save(product.getResourceRequest()));
+
         callForTender.getRequestedProducts().forEach(product -> product.setCallForTender(savedCallForTender));
-        System.out.println(callForTender.getRequestedProducts());
+        callForTender.setRequestedProducts(callForTender.getRequestedProducts());
+        // System.out.println(callForTender.getRequestedProducts().get(0).getResourceRequest().getStatus());
         callForTender.getRequestedProducts().forEach(product -> requestedProductRepository.save(product));
 
         return ResponseEntity.ok("Call for Tender added successfully.");
