@@ -28,6 +28,9 @@ public class Notification {
   private LocalDate sentDate;
   private Boolean seen;
 
+  @Enumerated(EnumType.STRING)
+  private NotificationType type;
+
   @ManyToOne
   @JoinColumn(name = "senderId")
   @JsonIgnoreProperties({"sentNotifications", "notifications"})
