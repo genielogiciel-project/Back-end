@@ -1,6 +1,8 @@
 package fst.GestionRessource.Department.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import fst.GestionRessource.Notification.model.Notification;
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.User.model.User;
@@ -37,4 +39,7 @@ public class Department {
 
   @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<ResourceRequest> resourceRequests;
+
+  @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Notification> notifications;
 }
