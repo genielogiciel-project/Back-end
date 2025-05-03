@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import fst.GestionRessource.Department.model.Department;
+import fst.GestionRessource.Notification.model.Notification;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -46,6 +47,12 @@ public class User implements UserDetails {
   @JsonIgnoreProperties({"head", "resources", "resourceRequests"})
   @OneToOne(mappedBy = "head", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Department departmentHead;
+
+  @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Notification> sentNotifications;
+
+  @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  private List<Notification> notifications;
 
   @Override
   @JsonIgnore

@@ -2,10 +2,13 @@ package fst.GestionRessource.Notification.service;
 
 import fst.GestionRessource.Notification.model.Notification;
 import fst.GestionRessource.Notification.repository.NotificationRepository;
+import fst.GestionRessource.Utils.IdGenerator;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -32,8 +35,21 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public ResponseEntity<?> addNotification(Notification notification) {
-        Notification savedNotification = notificationRepository.save(notification);
-        return ResponseEntity.ok(savedNotification);
+      notification.setSentDate(LocalDate.now());
+      notification.setSeen(false);
+
+      var ID = IdGenerator.generateId("NOTIF-");
+      while (notificationRepository.existsById(ID)) {
+        ID = IdGenerator.generateId("NOTIF-");
+      }
+      notification.setId(ID);
+
+      if(notification.getReceiver() == null || notification.getSender() == null) {
+        return ResponseEntity.status(400).body("Receiver or sender cannot be null");
+      }
+
+      Notification savedNotification = notificationRepository.save(notification);
+      return ResponseEntity.ok(savedNotification);
     }
 
     @Override

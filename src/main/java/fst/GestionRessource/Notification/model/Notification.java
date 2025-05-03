@@ -2,6 +2,8 @@ package fst.GestionRessource.Notification.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
@@ -26,14 +28,13 @@ public class Notification {
   private LocalDate sentDate;
   private Boolean seen;
 
-  @Enumerated(EnumType.STRING)
-  private Role to;
+  @ManyToOne
+  @JoinColumn(name = "senderId")
+  @JsonIgnoreProperties({"sentNotifications", "notifications"})
+  private User sender;
 
   @ManyToOne
-  @JoinColumn(name = "departmentId")
-  private Department department;
-
-  @ManyToOne
-  @JoinColumn(name = "userId")
-  private User user;
+  @JoinColumn(name = "receiverId")
+  @JsonIgnoreProperties({"sentNotifications", "notifications"})
+  private User receiver;
 }

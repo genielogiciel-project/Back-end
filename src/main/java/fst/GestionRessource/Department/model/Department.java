@@ -39,7 +39,4 @@ public class Department {
 
   @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<ResourceRequest> resourceRequests;
-
-  @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  private List<Notification> notifications;
 }
