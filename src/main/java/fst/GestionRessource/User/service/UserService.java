@@ -1,7 +1,6 @@
 package fst.GestionRessource.User.service;
 
 import fst.GestionRessource.Department.model.Department;
-import fst.GestionRessource.Department.service.DepartmentService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;

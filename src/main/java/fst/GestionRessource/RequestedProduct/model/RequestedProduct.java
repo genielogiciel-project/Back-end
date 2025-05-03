@@ -1,6 +1,5 @@
 package fst.GestionRessource.RequestedProduct.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import fst.GestionRessource.CallForTender.model.CallForTender;

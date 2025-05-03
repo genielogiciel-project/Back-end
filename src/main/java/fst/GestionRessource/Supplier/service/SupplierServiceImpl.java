@@ -2,7 +2,6 @@ package fst.GestionRessource.Supplier.service;
 
 import fst.GestionRessource.Supplier.model.Supplier;
 import fst.GestionRessource.Supplier.repository.SupplierRepository;
-import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 

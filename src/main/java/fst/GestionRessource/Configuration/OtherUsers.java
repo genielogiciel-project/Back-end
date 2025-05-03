@@ -6,7 +6,6 @@ import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.User.repository.UserRepository;
