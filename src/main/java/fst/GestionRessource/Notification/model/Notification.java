@@ -27,7 +27,7 @@ public class Notification {
   private Boolean seen;
 
   @Enumerated(EnumType.STRING)
-  private Role role;
+  private Role to;
 
   @ManyToOne
   @JoinColumn(name = "departmentId")
