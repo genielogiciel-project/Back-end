@@ -31,7 +31,8 @@ public class Resource {
   private String id;
   @Column(unique = true)
   private String inventoryNumber;
-  private String type;
+  @Enumerated(EnumType.STRING)
+  private ResourceType type;
   private String brand;
   private String specifications;
   @Enumerated(EnumType.STRING)
