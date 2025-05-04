@@ -22,7 +22,12 @@ public class CallForTenderController {
 
     @GetMapping
     public ResponseEntity<?> getAllCallForTenders() {
-        return service.getAllCallForTenders();
+      return service.getAllCallForTenders();
+    }
+
+    @GetMapping("/requested-products")
+    public ResponseEntity<?> getRequestedProductsForCallForTender() {
+      return service.getRequestedProductsForCallForTender();
     }
 
     @GetMapping("/{id}")

@@ -183,8 +183,10 @@ public class SecurityConfiguration {
 
                 /* 3. TEACHER actions */
                 .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name()))
-                .requestMatchers(HttpMethod.GET, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name()))
-                .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name()))
+                .requestMatchers(HttpMethod.GET, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
+                .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name(), Role.RESOURCE_MANAGER.name()))
+                .requestMatchers(HttpMethod.PUT, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
+                .requestMatchers(HttpMethod.DELETE, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
 
                 /* 4. READ access to resources: Teacher, Department, Manager */
                 .requestMatchers(HttpMethod.GET, RESOURCES_PATH)

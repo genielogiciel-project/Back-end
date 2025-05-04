@@ -6,12 +6,13 @@ import fst.GestionRessource.RequestedProduct.service.RequestedProductService;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
+import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
+import fst.GestionRessource.User.model.UserRequest;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,10 +25,17 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
   private final RequestedProductService requestedProductService;
 
     @Override
-    public ResponseEntity<?> getAllResourceRequests() {
-      var requests = repository.findAll();
-      System.out.println(requests);
-      return ResponseEntity.ok(requests);
+    public ResponseEntity<?> getAllResourceRequests(UserRequest user) {
+      if (user.getRole().contains(Role.TEACHER))
+        return ResponseEntity.ok(repository.findAllByTeacherId(user.getId()));
+      if (user.getRole().contains(Role.DEPARTMENT_HEAD))
+        return ResponseEntity.ok(repository.findAllByDepartmentId(user.getDepartmentHead().getId()));
+      if (user.getRole().contains(Role.RESOURCE_MANAGER)) {
+        var requests = repository.findAllByStatus(Status.VALIDATED);
+        // requests.stream().filter(request -> request.getStatus().equals(Status.VALIDATED)).toList();
+        return ResponseEntity.ok(requests);
+      }
+      return ResponseEntity.ok(repository.findAll());
     }
 
     @Override
@@ -136,31 +144,13 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
 
     @Override
     public ResponseEntity<?> getResourceRequestByUser(User user) {
-        try {
-            if (!repository.existsByTeacher(user)) {
-                return ResponseEntity.status(404).body("ResourceRequest not found");
-            }
-            return ResponseEntity.ok(repository.getResourceRequestsByUser(user));
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+      try {
+        if (!repository.existsByTeacher(user)) {
+          return ResponseEntity.status(404).body("ResourceRequest not found");
         }
-    }
-
-    @Override
-    public ResponseEntity<?> getResourceRequestByStatus(Status status) {
-        try {
-          if (!repository.existsByStatus(status)) {
-            return ResponseEntity.status(404).body("ResourceRequest not found");
-          }
-          var requests = repository.getResourceRequestsByStatus(status);
-          var products = new ArrayList<>();
-          for (var request : requests) {
-            products.addAll(request.getRequestedProducts());
-          }
-
-          return ResponseEntity.ok(products);
-        }catch (Exception e){
-            return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
-        }
+        return ResponseEntity.ok(repository.getResourceRequestsByUser(user));
+      } catch (Exception e) {
+        return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
+      }
     }
 }

@@ -2,27 +2,27 @@ package fst.GestionRessource.ResourceRequest.controller;
 
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
-import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.service.ResourceRequestServiceImpl;
 import fst.GestionRessource.User.model.User;
+import fst.GestionRessource.User.model.UserRequest;
 import fst.GestionRessource.User.service.UserService;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/resource-request")
 public class ResourceRequestController {
     private final ResourceRequestServiceImpl service;
     private final UserService userService;
-    public ResourceRequestController(ResourceRequestServiceImpl service, UserService userService) {
-        this.service = service;
-        this.userService = userService;
-    }
 
-    @GetMapping
-    public ResponseEntity<?> getAllResourceRequests() {
-        return service.getAllResourceRequests();
+
+    @PostMapping("/all")
+    public ResponseEntity<?> getAllResourceRequests(@RequestBody UserRequest user) {
+        return service.getAllResourceRequests(user);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getResourceRequestById(@PathVariable String id) {
@@ -58,10 +58,5 @@ public class ResourceRequestController {
         User user = temp.getBody() != null ? (User) temp.getBody() : null;
 
         return service.getResourceRequestByUser(user);
-    }
-    @GetMapping("/by-status/{status}")
-    public ResponseEntity<?> getResourceRequestsByStatus(@PathVariable String status) {
-        Status statusEnum = Status.valueOf(status.toUpperCase());
-        return service.getResourceRequestByStatus(statusEnum);
     }
 }

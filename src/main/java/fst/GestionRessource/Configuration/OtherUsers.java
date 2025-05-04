@@ -25,13 +25,17 @@ public class OtherUsers implements ApplicationListener<ContextRefreshedEvent> {
 
   @Override
   public void onApplicationEvent(ContextRefreshedEvent event) {
-    if (userRepository.count() >=6) return;
+    if (userRepository.count() >= 10) return;
     var users = List.of(
-      new User("U-00000000000000000000000000000002", "head", "chef de departement", passwordEncoder.encode("0"), Collections.singletonList(Role.DEPARTMENT_HEAD), null, null, null, null),
-      new User("U-00000000000000000000000000000003", "teacher", "enseignant", passwordEncoder.encode("0"), Collections.singletonList(Role.TEACHER), null, null, null, null),
-      new User("U-00000000000000000000000000000004", "supplier", "fournisseur", passwordEncoder.encode("0"), Collections.singletonList(Role.SUPPLIER), null, null, null, null),
-      new User("U-00000000000000000000000000000005", "resmanager", "responsable des ressources", passwordEncoder.encode("0"), Collections.singletonList(Role.RESOURCE_MANAGER), null, null, null, null),
-      new User("U-00000000000000000000000000000006", "tech", "technicien", passwordEncoder.encode("0"), Collections.singletonList(Role.TECHNICIAN), null, null, null, null)
+      new User("U-00000000000000000000000000000002", "head1", "chef de departement 1", passwordEncoder.encode("0"), Collections.singletonList(Role.DEPARTMENT_HEAD), null, null, null, null),
+      new User("U-00000000000000000000000000000003", "head2", "chef de departement 2", passwordEncoder.encode("0"), Collections.singletonList(Role.DEPARTMENT_HEAD), null, null, null, null),
+      new User("U-00000000000000000000000000000004", "teacher1", "enseignant 1", passwordEncoder.encode("0"), Collections.singletonList(Role.TEACHER), null, null, null, null),
+      new User("U-00000000000000000000000000000005", "teacher2", "enseignant 2", passwordEncoder.encode("0"), Collections.singletonList(Role.TEACHER), null, null, null, null),
+      new User("U-00000000000000000000000000000006", "supplier1", "fournisseur 1", passwordEncoder.encode("0"), Collections.singletonList(Role.SUPPLIER), null, null, null, null),
+      new User("U-00000000000000000000000000000007", "supplier2", "fournisseur 2", passwordEncoder.encode("0"), Collections.singletonList(Role.SUPPLIER), null, null, null, null),
+      new User("U-00000000000000000000000000000008", "resmanager", "responsable des ressources", passwordEncoder.encode("0"), Collections.singletonList(Role.RESOURCE_MANAGER), null, null, null, null),
+      new User("U-00000000000000000000000000000009", "tech1", "technicien 1", passwordEncoder.encode("0"), Collections.singletonList(Role.TECHNICIAN), null, null, null, null),
+      new User("U-00000000000000000000000000000010", "tech2", "technicien 2", passwordEncoder.encode("0"), Collections.singletonList(Role.TECHNICIAN), null, null, null, null)
     );
 
     userRepository.saveAll(users);

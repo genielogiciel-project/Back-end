@@ -13,4 +13,6 @@ public interface CallForTenderService {
     public ResponseEntity<?> updateCallForTender(String id, CallForTender callForTender);
 
     public ResponseEntity<?> deleteCallForTender(String id);
+
+    public ResponseEntity<?> getRequestedProductsForCallForTender();
 }

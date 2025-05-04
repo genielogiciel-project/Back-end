@@ -24,7 +24,7 @@ public class Department {
   private String id;
   private String name;
 
-  @JsonIgnoreProperties({"department", "departmentHead", "callForTenders", "resources", "resourceRequests", "panicReports", "notifications", "maintenanceRecords"})
+  @JsonIgnoreProperties({"department", "departmentHead", "callForTenders", "resources", "resourceRequests", "panicReports", "notifications", "maintenanceRecords", "role", "userNumber", "sentNotifications"})
   @OneToOne
   @JoinColumn(name = "headId")
   private User head;

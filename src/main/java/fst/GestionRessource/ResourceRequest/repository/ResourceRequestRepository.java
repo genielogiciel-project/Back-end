@@ -21,9 +21,11 @@ public interface ResourceRequestRepository extends JpaRepository<ResourceRequest
 
     boolean existsByTeacher(User teacher);
 
-    @Query("SELECT r FROM ResourceRequest r WHERE r.status = ?1")
-    List<ResourceRequest> getResourceRequestsByStatus(Status status);
-
     boolean existsByStatus(Status status);
 
+    List<ResourceRequest> findAllByStatus(Status status);
+
+    List<ResourceRequest> findAllByTeacherId(String id);
+
+    List<ResourceRequest> findAllByDepartmentId(String id);
 }

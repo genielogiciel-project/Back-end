@@ -2,11 +2,14 @@ package fst.GestionRessource.CallForTender.service;
 
 import fst.GestionRessource.CallForTender.model.CallForTender;
 import fst.GestionRessource.CallForTender.repository.CallForTenderRepository;
+import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.RequestedProduct.repository.RequestedProductRepository;
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
+
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +22,8 @@ public class CallForTenderServiceImpl implements CallForTenderService {
 
   @Autowired
   private final CallForTenderRepository callForTenderRepository;
-
   @Autowired
   private final RequestedProductRepository requestedProductRepository;
-
   @Autowired
   private final ResourceRequestRepository resourceRequestRepository;
     // private final List<CallForTender> callForTenderList = new ArrayList<>();
@@ -109,10 +110,22 @@ public class CallForTenderServiceImpl implements CallForTenderService {
     @Override
     public ResponseEntity<?> deleteCallForTender(String id) {
 
-        if (callForTenderRepository.existsById(id)) {
-            callForTenderRepository.deleteById(id);
-            return ResponseEntity.ok("Call for Tender deleted successfully.");
-        }
-        return ResponseEntity.notFound().build();
+      if (callForTenderRepository.existsById(id)) {
+        callForTenderRepository.deleteById(id);
+        return ResponseEntity.ok("Call for Tender deleted successfully.");
+      }
+      return ResponseEntity.notFound().build();
+    }
+
+    @Override
+    public ResponseEntity<?> getRequestedProductsForCallForTender() {
+      var requests = resourceRequestRepository.findAllByStatus(Status.VALIDATED);
+      var products = new ArrayList<RequestedProduct>();
+
+      for (var request : requests) {
+        products.addAll(request.getRequestedProducts());
+      }
+
+      return ResponseEntity.ok(products);
     }
 }

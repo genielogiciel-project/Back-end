@@ -39,18 +39,22 @@ public class User implements UserDetails {
   @Enumerated(EnumType.STRING)
   private List<Role> role;
 
+  // @JsonDeserialize(as = HashMap.class)
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "departmentId")
   @JsonIgnoreProperties({"users", "resources", "resourceRequests"})
   private Department department;
 
   @JsonIgnoreProperties({"head", "resources", "resourceRequests"})
+  // @JsonIgnore
   @OneToOne(mappedBy = "head", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private Department departmentHead;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Notification> sentNotifications;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
   private List<Notification> notifications;
 
