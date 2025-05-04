@@ -25,7 +25,9 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
 
     @Override
     public ResponseEntity<?> getAllResourceRequests() {
-        return ResponseEntity.ok(repository.findAll());
+      var requests = repository.findAll();
+      System.out.println(requests);
+      return ResponseEntity.ok(requests);
     }
 
     @Override

@@ -2,7 +2,6 @@ package fst.GestionRessource.Department.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import fst.GestionRessource.Notification.model.Notification;
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.User.model.User;

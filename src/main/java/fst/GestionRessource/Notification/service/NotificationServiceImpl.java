@@ -28,9 +28,15 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public ResponseEntity<?> getNotificationById(String id) {
-        Optional<Notification> notification = notificationRepository.findById(id);
-        return notification.map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+      Optional<Notification> notification = notificationRepository.findById(id);
+      return notification.map(ResponseEntity::ok)
+          .orElse(ResponseEntity.notFound().build());
+    }
+
+    @Override
+    public ResponseEntity<?> getNotificationsByUser(String userId) {
+      List<Notification> notifications = notificationRepository.findByReceiverId(userId);
+      return ResponseEntity.ok(notifications);
     }
 
     @Override
@@ -44,12 +50,23 @@ public class NotificationServiceImpl implements NotificationService {
       }
       notification.setId(ID);
 
-      if(notification.getReceiver() == null || notification.getSender() == null) {
+      if (notification.getReceiver() == null || notification.getSender() == null) {
         return ResponseEntity.status(400).body("Receiver or sender cannot be null");
       }
 
       Notification savedNotification = notificationRepository.save(notification);
       return ResponseEntity.ok(savedNotification);
+    }
+
+    @Override
+    public ResponseEntity<?> markNotificationAsRead(String id) {
+        if (notificationRepository.existsById(id)) {
+            Notification notification = notificationRepository.findById(id).get();
+            notification.setSeen(true);
+            Notification updatedNotification = notificationRepository.save(notification);
+            return ResponseEntity.ok(updatedNotification);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @Override

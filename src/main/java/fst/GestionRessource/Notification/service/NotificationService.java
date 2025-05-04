@@ -8,7 +8,11 @@ public interface NotificationService {
 
     public ResponseEntity<?> getNotificationById(String id);
 
+    public ResponseEntity<?> getNotificationsByUser(String userId);
+
     public ResponseEntity<?> addNotification(Notification notification);
+
+    public ResponseEntity<?> markNotificationAsRead(String id);
 
     public ResponseEntity<?> updateNotification(String id, Notification notification);
 

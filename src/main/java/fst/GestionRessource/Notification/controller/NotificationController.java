@@ -20,12 +20,22 @@ public class NotificationController {
 
     @GetMapping("/{id}")
     public ResponseEntity<?> getNotificationById(@PathVariable String id) {
-        return notificationService.getNotificationById(id);
+      return notificationService.getNotificationById(id);
+    }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> getNotificationsByUser(@PathVariable String id) {
+        return notificationService.getNotificationsByUser(id);
     }
 
     @PostMapping
     public ResponseEntity<?> addNotification(@RequestBody Notification notification) {
-        return notificationService.addNotification(notification);
+      return notificationService.addNotification(notification);
+    }
+
+    @PutMapping("/{id}/read")
+    public ResponseEntity<?> markNotificationAsRead(@PathVariable String id) {
+        return notificationService.markNotificationAsRead(id);
     }
 
     @PutMapping("/{id}")

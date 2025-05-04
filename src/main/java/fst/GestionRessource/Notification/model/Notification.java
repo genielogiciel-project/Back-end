@@ -4,8 +4,6 @@ import java.time.LocalDate;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import fst.GestionRessource.Department.model.Department;
-import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
