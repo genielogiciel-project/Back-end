@@ -40,6 +40,7 @@ public class Proposal {
 
   @ManyToOne
   @JoinColumn(name = "callForTenderId")
+  @JsonIgnoreProperties({"startDate", "endDate", "resourceManager", "proposals", "requestedProducts"})
   private CallForTender callForTender;
 
   // @OneToOne(mappedBy = "selectedProposal")

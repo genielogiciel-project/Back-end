@@ -1,18 +1,19 @@
 package fst.GestionRessource.Resource.service;
 
 import fst.GestionRessource.Resource.model.Resource;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface ResourceService {
-    List<Resource> getAllResources();
+    ResponseEntity<?> getAllResources(String userId);
 
-    Optional<Resource> getResourceById(String id);
+    ResponseEntity<?> getResourceById(String id);
+    
+    ResponseEntity<?> addResource(Resource resource);
 
-    Resource addResource(Resource resource);
-
-    Optional<Resource> updateResource(String id, Resource resource);
-
-    boolean deleteResource(String id);
+    ResponseEntity<?> updateResource(String id, Resource resource);
+    
+    ResponseEntity<?> deleteResource(String id);
 }

@@ -161,6 +161,7 @@ public class SecurityConfiguration {
     private static final String PROPOSALS_PATH = "/api/proposal/**";
     private static final String TENDERS_PATH   = "/api/tender/**";
     private static final String REQUESTS_PATH  = "/api/resource-request/**";
+    private static final String GET_TEACHERS_PATH = "/api/user/teachers/**";
 
     /* === Security filter chain ========================================== */
 
@@ -176,10 +177,11 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> auth
 
                 /* 1. PUBLIC */
-                .requestMatchers(AUTH_PATH).permitAll()
+                .requestMatchers(AUTH_PATH).permitAll().
+                requestMatchers("/api/supplier/register").permitAll()
 
                 /* 2. SUPER-ADMIN only for managing users */
-                .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
+//                .requestMatchers(USERS_PATH).hasAuthority(Role.SUPER_ADMIN.name())
 
                 /* 3. TEACHER actions */
                 .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name()))
@@ -187,7 +189,6 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name(), Role.RESOURCE_MANAGER.name()))
                 .requestMatchers(HttpMethod.PUT, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
                 .requestMatchers(HttpMethod.DELETE, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
-
                 /* 4. READ access to resources: Teacher, Department, Manager */
                 .requestMatchers(HttpMethod.GET, RESOURCES_PATH)
                     .hasAnyAuthority(withSuperAdmin(
@@ -198,9 +199,10 @@ public class SecurityConfiguration {
 
                 /* 5. SUPPLIER actions */
                 .requestMatchers(HttpMethod.POST, PROPOSALS_PATH).hasAnyAuthority(withSuperAdmin(Role.SUPPLIER.name()))
-                .requestMatchers(SUPPLIER_PATH).hasAnyAuthority(withSuperAdmin(Role.SUPPLIER.name()))
+                .requestMatchers(SUPPLIER_PATH).hasAnyAuthority(withSuperAdmin(Role.SUPPLIER.name(), Role.RESOURCE_MANAGER.name()))
 
                 /* 6. RESOURCE MANAGER actions */
+                .requestMatchers(HttpMethod.GET, GET_TEACHERS_PATH).hasAnyAuthority(withSuperAdmin(Role.RESOURCE_MANAGER.name(), Role.DEPARTMENT_HEAD.name()))
                 .requestMatchers(HttpMethod.POST, RESOURCES_PATH).hasAnyAuthority(withSuperAdmin(Role.RESOURCE_MANAGER.name()))
                 .requestMatchers(PANIC_PATH, PROPOSALS_PATH, TENDERS_PATH, REQUESTS_PATH)
                     .hasAnyAuthority(withSuperAdmin(Role.RESOURCE_MANAGER.name()))

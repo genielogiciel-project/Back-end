@@ -2,50 +2,40 @@ package fst.GestionRessource.Resource.controller;
 
 import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.Resource.service.ResourceService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/resources")
 public class ResourceController {
 
     private final ResourceService resourceService;
 
-    public ResourceController(ResourceService resourceService) {
-        this.resourceService = resourceService;
-    }
-
-    @GetMapping
-    public ResponseEntity<List<Resource>> getAllResources() {
-        return ResponseEntity.ok(resourceService.getAllResources());
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getAllResources(@PathVariable String userId) {
+        return resourceService.getAllResources(userId);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Resource> getResourceById(@PathVariable String id) {
-        return resourceService.getResourceById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> getResourceById(@PathVariable String id) {
+        return resourceService.getResourceById(id);
     }
 
     @PostMapping
-    public ResponseEntity<Resource> addResource(@RequestBody Resource resource) {
+    public ResponseEntity<?> addResource(@RequestBody Resource resource) {
         return ResponseEntity.ok(resourceService.addResource(resource));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Resource> updateResource(@PathVariable String id, @RequestBody Resource resource) {
-        return resourceService.updateResource(id, resource)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<?> updateResource(@PathVariable String id, @RequestBody Resource resource) {
+        return resourceService.updateResource(id, resource);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteResource(@PathVariable String id) {
-        if (resourceService.deleteResource(id)) {
-            return ResponseEntity.ok("Resource deleted successfully.");
-        }
-        return ResponseEntity.notFound().build();
+    public ResponseEntity<?> deleteResource(@PathVariable String id) {
+        return resourceService.deleteResource(id);
     }
 }

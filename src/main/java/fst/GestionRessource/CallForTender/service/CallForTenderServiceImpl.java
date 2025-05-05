@@ -1,17 +1,21 @@
 package fst.GestionRessource.CallForTender.service;
 
 import fst.GestionRessource.CallForTender.model.CallForTender;
+import fst.GestionRessource.CallForTender.model.CallRequest;
 import fst.GestionRessource.CallForTender.repository.CallForTenderRepository;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.RequestedProduct.repository.RequestedProductRepository;
+import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
+import fst.GestionRessource.ResourceRequest.service.ResourceRequestService;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +30,9 @@ public class CallForTenderServiceImpl implements CallForTenderService {
   private final RequestedProductRepository requestedProductRepository;
   @Autowired
   private final ResourceRequestRepository resourceRequestRepository;
-    // private final List<CallForTender> callForTenderList = new ArrayList<>();
+	@Autowired
+	private ResourceRequestService resourceRequestService;
+  // private final List<CallForTender> callForTenderList = new ArrayList<>();
 
     @Override
     public ResponseEntity<?> getAllCallForTenders() {
@@ -55,17 +61,16 @@ public class CallForTenderServiceImpl implements CallForTenderService {
             ID = IdGenerator.generateId("CFT-");
         }
         callForTender.setId(ID);
-        var savedCallForTender = callForTenderRepository.save(callForTender);
-        callForTender.getRequestedProducts().forEach(product -> product.getResourceRequest().setStatus(Status.SENT));
-        callForTender.setRequestedProducts(callForTender.getRequestedProducts());
-        callForTender.getRequestedProducts().forEach(product -> resourceRequestRepository.save(product.getResourceRequest()));
-
-        callForTender.getRequestedProducts().forEach(product -> product.setCallForTender(savedCallForTender));
-        callForTender.setRequestedProducts(callForTender.getRequestedProducts());
-        // System.out.println(callForTender.getRequestedProducts().get(0).getResourceRequest().getStatus());
-        callForTender.getRequestedProducts().forEach(product -> requestedProductRepository.save(product));
-
-        return ResponseEntity.ok("Call for Tender added successfully.");
+        callForTender.setOpen(true);
+        callForTender.getRequestedProducts().forEach(product -> {
+          var resourceId = product.getResourceRequest().getId();
+          product.setCallForTender(callForTender);
+          product.setResourceRequest((ResourceRequest) resourceRequestService.updateResourceRequestStatus(resourceId, Status.SENT).getBody());
+        });
+        
+      callForTenderRepository.save(callForTender);
+      
+      return ResponseEntity.ok("Call for Tender added successfully.");
     }
 
     @Override
@@ -127,5 +132,18 @@ public class CallForTenderServiceImpl implements CallForTenderService {
       }
 
       return ResponseEntity.ok(products);
+    }
+    
+    @Override
+    public ResponseEntity<?> updateCallForTenderStatus(String id) {
+      var call = callForTenderRepository.findById(id);
+      
+      if (call.isPresent()) {
+        call.get().setOpen(!call.get().getOpen());
+        callForTenderRepository.save(call.get());
+        return ResponseEntity.ok("Call for Tender updated successfully.");
+      }
+      
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Call for Tender not found.");
     }
 }

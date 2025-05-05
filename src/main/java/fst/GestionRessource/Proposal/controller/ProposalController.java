@@ -34,4 +34,8 @@ public class ProposalController {
     public ResponseEntity<?> deleteProposal(@PathVariable String id) {
         return service.deleteProposal(id);
     }
+    @PutMapping("/{id}/accepted-refused/{resManagerId}")
+    public ResponseEntity<?> acceptedRefused(@PathVariable String id, @PathVariable String resManagerId, @RequestBody String[] refused) {
+        return service.acceptedRefused(resManagerId, id, refused);
+    }
 }

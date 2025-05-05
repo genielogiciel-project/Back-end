@@ -13,4 +13,6 @@ public interface ProposalService {
     public ResponseEntity<?> updateProposal(String id, Proposal proposal);
 
     public ResponseEntity<?> deleteProposal(String id);
+    
+    public ResponseEntity<?> acceptedRefused(String resManagerId, String id, String[] refused);
 }

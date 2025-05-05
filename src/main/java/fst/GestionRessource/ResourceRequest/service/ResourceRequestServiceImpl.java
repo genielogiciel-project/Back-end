@@ -26,6 +26,7 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
 
     @Override
     public ResponseEntity<?> getAllResourceRequests(UserRequest user) {
+      System.out.println(user);
       if (user.getRole().contains(Role.TEACHER))
         return ResponseEntity.ok(repository.findAllByTeacherId(user.getId()));
       if (user.getRole().contains(Role.DEPARTMENT_HEAD))
@@ -152,5 +153,17 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
       } catch (Exception e) {
         return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
       }
+    }
+    
+    @Override
+    public ResponseEntity<?> updateResourceRequestStatus(String id, Status status) {
+      var existingRequest = repository.findById(id);
+      
+      if (existingRequest.isPresent()) {
+        existingRequest.get().setStatus(status);
+        var savedRequest = repository.save(existingRequest.get());
+        return ResponseEntity.ok(savedRequest);
+      }
+      return ResponseEntity.status(404).body("ResourceRequest not found");
     }
 }

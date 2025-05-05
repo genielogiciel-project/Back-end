@@ -23,7 +23,7 @@ public class SupplierController {
     public ResponseEntity<?> getSupplierById(@PathVariable String id) {
         return service.getSupplierById(id);
     }
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<?> addSupplier(@RequestBody Supplier supplier) {
         System.out.println("Received supplier: " + supplier.getPassword());  // Check if password is correctly set
         service.addSupplier(supplier);

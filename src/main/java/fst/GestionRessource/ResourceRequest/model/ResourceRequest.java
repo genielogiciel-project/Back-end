@@ -32,7 +32,7 @@ public class ResourceRequest {
   private LocalDate createdAt;
 
   @OneToMany(mappedBy = "resourceRequest", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JsonIgnoreProperties({"proposal", "callForTender"})
+  @JsonIgnoreProperties({"callForTender", "resourceRequest"})
   private List<RequestedProduct> requestedProducts;
 
   @ManyToOne
@@ -42,6 +42,6 @@ public class ResourceRequest {
 
   @ManyToOne
   @JoinColumn(name = "departmentId")
-  @JsonIgnoreProperties({"users", "resources", "resourceRequests"})
+  @JsonIgnoreProperties({"head", "users", "resources", "resourceRequests"})
   private Department department;
 }

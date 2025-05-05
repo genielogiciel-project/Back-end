@@ -2,6 +2,7 @@ package fst.GestionRessource.ResourceRequest.controller;
 
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
+import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.service.ResourceRequestServiceImpl;
 import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.User.model.UserRequest;
@@ -39,6 +40,10 @@ public class ResourceRequestController {
 
           System.out.println(resourceRequest);
         return service.updateResourceRequest(id, resourceRequest);
+    }
+    @PutMapping("/status/{id}")
+    public ResponseEntity<?> updateResourceRequestStatus(@PathVariable String id, @RequestBody Status status) {
+        return service.updateResourceRequestStatus(id, status);
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteResourceRequest(@PathVariable String id) {
