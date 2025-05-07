@@ -5,7 +5,6 @@ import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.service.ResourceRequestServiceImpl;
 import fst.GestionRessource.User.model.User;
-import fst.GestionRessource.User.model.UserRequest;
 import fst.GestionRessource.User.service.UserService;
 import lombok.RequiredArgsConstructor;
 

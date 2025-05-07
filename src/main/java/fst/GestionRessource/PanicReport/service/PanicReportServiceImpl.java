@@ -3,7 +3,6 @@ package fst.GestionRessource.PanicReport.service;
 import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.PanicReport.model.Status;
 import fst.GestionRessource.PanicReport.repository.PanicReportRepository;
-import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.Resource.model.ResourceStatus;
 import fst.GestionRessource.Resource.repository.ResourceRepository;
 import fst.GestionRessource.Utils.IdGenerator;
@@ -13,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -41,12 +39,12 @@ public class PanicReportServiceImpl implements PanicReportService {
         panicReport.setStatus(Status.OPEN);
         panicReport.setReportDate(LocalDate.now());
         panicReportRepository.save(panicReport);
-        
+
         var resource = resourceRepository.findById(panicReport.getResource().getId()).orElse(null);
 	      assert resource != null;
 	      resource.setStatus(ResourceStatus.MAINTENANCE);
         resourceRepository.save(resource);
-        
+
         return ResponseEntity.status(HttpStatus.CREATED).body("Panic created successfully");
     }
 
@@ -55,7 +53,7 @@ public class PanicReportServiceImpl implements PanicReportService {
         if (panicReportRepository.existsById(id)) {
             panicReport.setId(id);
             panicReportRepository.save(panicReport);
-            
+
             return ResponseEntity.ok("Panic updated successfully");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Panic not found");

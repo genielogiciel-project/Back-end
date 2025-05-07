@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +25,7 @@ public class ResourceServiceImpl implements ResourceService {
       var user = userRepository.findById(userID);
       var resources = resourceRepository.findAll();
       var finalResources = new ArrayList<Resource>();
-      
+
       if (user.isPresent()) {
         if (user.get().getRole().contains(Role.TEACHER)) {
           resources.forEach(resource -> {
@@ -43,11 +41,11 @@ public class ResourceServiceImpl implements ResourceService {
                 finalResources.add(resource);
             }
           });
-          
+
           return ResponseEntity.ok(finalResources);
         }
       }
-      
+
       return ResponseEntity.ok(resources);
     }
 
@@ -65,14 +63,14 @@ public class ResourceServiceImpl implements ResourceService {
       resource.setId(ID);
       resource.setAcquisitionDate(LocalDate.now());
       resource.setInventoryNumber(IdGenerator.generateId("INV-"));
-      
+
       return ResponseEntity.ok(resourceRepository.save(resource));
     }
 
     @Override
     public ResponseEntity<?> updateResource(String id, Resource resource) {
       var existingResource = resourceRepository.findById(id);
-      
+
       if (existingResource.isPresent()) {
         System.out.println(resource);
         if (resource.getBrand() != null) {
@@ -105,7 +103,7 @@ public class ResourceServiceImpl implements ResourceService {
         return ResponseEntity.ok(resourceRepository.save(resource));
 //        return ResponseEntity.ok(resource);
       }
-      
+
       return ResponseEntity.notFound().build();
     }
 

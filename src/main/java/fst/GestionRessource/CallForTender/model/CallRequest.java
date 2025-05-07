@@ -1,6 +1,5 @@
 package fst.GestionRessource.CallForTender.model;
 
-import fst.GestionRessource.Proposal.model.Proposal;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
 import fst.GestionRessource.User.model.User;
 import lombok.Data;

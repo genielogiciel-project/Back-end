@@ -18,9 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
     private final NotificationRepository notificationRepository;
-    private final UserRepository UserRepository;
   private final UserRepository userRepository;
-  
+
   @Override
     public ResponseEntity<?> getAllNotifications() {
         List<Notification> notifications = notificationRepository.findAll();
@@ -58,19 +57,19 @@ public class NotificationServiceImpl implements NotificationService {
       Notification savedNotification = notificationRepository.save(notification);
       return ResponseEntity.ok(savedNotification);
     }
-    
+
     @Override
     public ResponseEntity<?> sendMessage(SendMessagesRequest request) {
       System.out.println(request);
       var sender = userRepository.findById(request.getSender()).orElse(null);
       var message = request.getMessage();
-      
+
       for (String receiverId : request.getReceivers()) {
         var receiver = userRepository.findById(receiverId).orElse(null);
         var notif = new Notification(null, message, null, null, request.getType(), sender, receiver);
         addNotification(notif);
       }
-      
+
       return ResponseEntity.ok("The message has been sent successfully");
     }
 

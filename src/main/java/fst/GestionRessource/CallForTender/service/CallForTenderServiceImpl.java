@@ -1,10 +1,8 @@
 package fst.GestionRessource.CallForTender.service;
 
 import fst.GestionRessource.CallForTender.model.CallForTender;
-import fst.GestionRessource.CallForTender.model.CallRequest;
 import fst.GestionRessource.CallForTender.repository.CallForTenderRepository;
 import fst.GestionRessource.RequestedProduct.model.RequestedProduct;
-import fst.GestionRessource.RequestedProduct.repository.RequestedProductRepository;
 import fst.GestionRessource.ResourceRequest.model.ResourceRequest;
 import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
@@ -14,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CallForTenderServiceImpl implements CallForTenderService {
   private final CallForTenderRepository callForTenderRepository;
-  private final RequestedProductRepository requestedProductRepository;
   private final ResourceRequestRepository resourceRequestRepository;
 	private ResourceRequestService resourceRequestService;
   // private final List<CallForTender> callForTenderList = new ArrayList<>();
@@ -62,9 +58,9 @@ public class CallForTenderServiceImpl implements CallForTenderService {
           product.setCallForTender(callForTender);
           product.setResourceRequest((ResourceRequest) resourceRequestService.updateResourceRequestStatus(resourceId, Status.SENT).getBody());
         });
-        
+
       callForTenderRepository.save(callForTender);
-      
+
       return ResponseEntity.ok("Call for Tender added successfully.");
     }
 
@@ -128,17 +124,17 @@ public class CallForTenderServiceImpl implements CallForTenderService {
 
       return ResponseEntity.ok(products);
     }
-    
+
     @Override
     public ResponseEntity<?> updateCallForTenderStatus(String id) {
       var call = callForTenderRepository.findById(id);
-      
+
       if (call.isPresent()) {
         call.get().setOpen(!call.get().getOpen());
         callForTenderRepository.save(call.get());
         return ResponseEntity.ok("Call for Tender updated successfully.");
       }
-      
+
       return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Call for Tender not found.");
     }
 }

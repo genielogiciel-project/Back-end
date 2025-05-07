@@ -3,7 +3,6 @@ package fst.GestionRessource.Notification.controller;
 import fst.GestionRessource.Notification.model.Notification;
 import fst.GestionRessource.Notification.model.SendMessagesRequest;
 import fst.GestionRessource.Notification.service.NotificationService;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +28,7 @@ public class NotificationController {
     public ResponseEntity<?> getNotificationsByUser(@PathVariable String id) {
         return notificationService.getNotificationsByUser(id);
     }
-    
+
     @PostMapping("/send")
     public ResponseEntity<?> sendMessage(@RequestBody SendMessagesRequest request) {
         return notificationService.sendMessage(request);

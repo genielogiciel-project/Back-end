@@ -154,7 +154,7 @@ public class SecurityConfiguration {
     /* === Endpoints ======================================================= */
 
     private static final String AUTH_PATH      = "/api/auth/**";
-    private static final String USERS_PATH     = "/api/user/**";
+    // private static final String USERS_PATH     = "/api/user/**";
     private static final String RESOURCES_PATH = "/api/resource/**";
     private static final String SUPPLIER_PATH  = "/api/supplier/**";
     private static final String PANIC_PATH     = "/api/panic-reports/**";
@@ -188,7 +188,7 @@ public class SecurityConfiguration {
                 .requestMatchers(HttpMethod.POST, PANIC_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
                 .requestMatchers(HttpMethod.PUT, PANIC_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
                 .requestMatchers(HttpMethod.DELETE, PANIC_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
-              
+
                 .requestMatchers(HttpMethod.GET, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name(), Role.RESOURCE_MANAGER.name(), Role.SUPPLIER.name()))
                 .requestMatchers(HttpMethod.POST, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))
                 .requestMatchers(HttpMethod.PUT, REQUESTS_PATH).hasAnyAuthority(withSuperAdmin(Role.TEACHER.name(), Role.DEPARTMENT_HEAD.name()))

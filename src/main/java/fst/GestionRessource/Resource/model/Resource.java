@@ -3,7 +3,6 @@ package fst.GestionRessource.Resource.model;
 import java.time.LocalDate;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.PanicReport.model.PanicReport;

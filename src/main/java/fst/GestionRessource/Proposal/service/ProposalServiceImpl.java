@@ -11,7 +11,6 @@ import fst.GestionRessource.Resource.model.Resource;
 import fst.GestionRessource.Resource.model.ResourceStatus;
 import fst.GestionRessource.Resource.service.ResourceService;
 import fst.GestionRessource.Supplier.model.Supplier;
-import fst.GestionRessource.User.model.User;
 import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
@@ -56,7 +55,7 @@ public class ProposalServiceImpl implements ProposalService{
             }
 
             proposal.setId(ID.get());
-            
+
             var products = proposal.getProposalProducts();
             proposal.setProposalProducts(null);
             var savedProposal = proposalRepository.save(proposal);
@@ -114,7 +113,7 @@ public class ProposalServiceImpl implements ProposalService{
             return ResponseEntity.status(500).body("An error occurred: " + e.getMessage());
         }
     }
-    
+
     @Override
     public ResponseEntity<?> acceptedRefused(String resManagerId, String acceptedId, String[] refused) {
         var accepted = proposalRepository.findById(acceptedId);
@@ -122,34 +121,34 @@ public class ProposalServiceImpl implements ProposalService{
         var receiver = userRepository.findById(accepted.get().getSupplier().getId());
         var call = callForTenderRepository.findById(accepted.get().getCallForTender().getId());
         var notif = new Notification(null, "Ton proposition de l'appel d'ofre '"+ call.get().getTitle() +"' a etait accepte", null, null, NotificationType.SUCCESS, sender.get(), receiver.get());
-        
-        
+
+
         if (accepted.isPresent()) {
             accepted.get().setAccepted(true);
             notificationService.addNotification(notif);
             proposalRepository.save(accepted.get());
         }
-        
+
         for (String id : refused) {
             var refusedProposal = proposalRepository.findById(id);
             receiver = userRepository.findById(refusedProposal.get().getSupplier().getId());
-            
+
             notif.setType(NotificationType.REJECTION);
             notif.setMessage("Ton proposition de l'appel d'ofre '"+ call.get().getTitle() +"' a etait refuse");
             notif.setReceiver(receiver.get());
-            
+
             notificationService.addNotification(notif);
             if (refusedProposal.isPresent()) {
                 refusedProposal.get().setAccepted(false);
                 proposalRepository.save(refusedProposal.get());
             }
         }
-        
+
         if (call.isPresent()) {
             call.get().setOpen(false);
             callForTenderRepository.save(call.get());
         }
-        
+
         notif.setType(NotificationType.DELIVERY);
         notif.setMessage("La livraison des resources d'appel d'offre '" + call.get().getTitle() + "' est faite");
         sender = userRepository.findById(accepted.get().getSupplier().getId());
@@ -157,7 +156,7 @@ public class ProposalServiceImpl implements ProposalService{
         notif.setSender(sender.get());
         notif.setReceiver(receiver.get());
         notificationService.addNotification(notif);
-        
+
         call.get().getRequestedProducts().forEach(requestedProduct -> {
             for (int i = 0; i < requestedProduct.getQuantity(); i++) {
                 var resource = new Resource(
@@ -176,7 +175,7 @@ public class ProposalServiceImpl implements ProposalService{
                 resourceService.addResource(resource);
             }
         });
-        
+
         return ResponseEntity.ok("Proposal accepted successfully");
     }
 }
