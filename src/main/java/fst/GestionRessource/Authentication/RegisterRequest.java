@@ -13,8 +13,8 @@ import fst.GestionRessource.User.model.Role;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterRequest {
-    private String userNumber;
     private String fullName;
+    private String userNumber;
     private String password;
     private List<Role> role;
     private Department department;

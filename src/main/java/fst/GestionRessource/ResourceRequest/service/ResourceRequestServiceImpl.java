@@ -8,7 +8,7 @@ import fst.GestionRessource.ResourceRequest.model.Status;
 import fst.GestionRessource.ResourceRequest.repository.ResourceRequestRepository;
 import fst.GestionRessource.User.model.Role;
 import fst.GestionRessource.User.model.User;
-import fst.GestionRessource.User.model.UserRequest;
+import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 import lombok.RequiredArgsConstructor;
 
@@ -23,21 +23,28 @@ public class ResourceRequestServiceImpl implements ResourceRequestService {
   private final ResourceRequestRepository repository;
   private final RequestedProductRepository requestedProductRepository;
   private final RequestedProductService requestedProductService;
-
-    @Override
-    public ResponseEntity<?> getAllResourceRequests(UserRequest user) {
-      System.out.println(user);
-      if (user.getRole().contains(Role.TEACHER))
-        return ResponseEntity.ok(repository.findAllByTeacherId(user.getId()));
-      if (user.getRole().contains(Role.DEPARTMENT_HEAD))
-        return ResponseEntity.ok(repository.findAllByDepartmentId(user.getDepartmentHead().getId()));
-      if (user.getRole().contains(Role.RESOURCE_MANAGER)) {
-        var requests = repository.findAllByStatus(Status.VALIDATED);
-        // requests.stream().filter(request -> request.getStatus().equals(Status.VALIDATED)).toList();
-        return ResponseEntity.ok(requests);
-      }
-      return ResponseEntity.ok(repository.findAll());
+  private final UserRepository userRepository;
+  
+  @Override
+  public ResponseEntity<?> getAllResourceRequests() {
+    return ResponseEntity.ok(repository.findAll());
+  }
+  
+  @Override
+  public ResponseEntity<?> getAllResourceRequests(String userId) {
+    var user = userRepository.findById(userId).orElse(null);
+	 
+    assert user != null;
+    if (user.getRole().contains(Role.TEACHER)) {
+      return ResponseEntity.ok(repository.findAllByTeacherId(userId));
+    } else if (user.getRole().contains(Role.DEPARTMENT_HEAD)) {
+      return ResponseEntity.ok(repository.findAllByDepartmentId(user.getDepartmentHead().getId()));
+    } else if (user.getRole().contains(Role.RESOURCE_MANAGER)) {
+      System.out.println(repository.findAllByStatus(Status.VALIDATED));
+      return ResponseEntity.ok(repository.findAllByStatus(Status.VALIDATED));
     }
+    return ResponseEntity.ok(repository.findAll());
+  }
 
     @Override
     public ResponseEntity<?> getResourceRequestById(String id) {

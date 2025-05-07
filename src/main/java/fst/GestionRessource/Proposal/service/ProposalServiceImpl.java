@@ -150,7 +150,7 @@ public class ProposalServiceImpl implements ProposalService{
             callForTenderRepository.save(call.get());
         }
         
-        notif.setType(NotificationType.INFO);
+        notif.setType(NotificationType.DELIVERY);
         notif.setMessage("La livraison des resources d'appel d'offre '" + call.get().getTitle() + "' est faite");
         sender = userRepository.findById(accepted.get().getSupplier().getId());
         receiver = userRepository.findById(resManagerId);

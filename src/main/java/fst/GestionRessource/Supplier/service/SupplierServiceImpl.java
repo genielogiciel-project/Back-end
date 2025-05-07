@@ -44,7 +44,6 @@ public class SupplierServiceImpl implements SupplierService {
                 ID = IdGenerator.generateId("SUP-");
             }
             supplier.setId(ID);
-            System.out.println(supplier.getPassword());
             supplier.setPassword(passwordEncoder.encode(supplier.getPassword()));
             supplierRepository.save(supplier);
             return ResponseEntity.ok("Supplier created successfully");

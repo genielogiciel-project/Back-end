@@ -1,9 +1,12 @@
 package fst.GestionRessource.Notification.service;
 
 import fst.GestionRessource.Notification.model.Notification;
+import fst.GestionRessource.Notification.model.SendMessagesRequest;
 import fst.GestionRessource.Notification.repository.NotificationRepository;
+import fst.GestionRessource.User.repository.UserRepository;
 import fst.GestionRessource.Utils.IdGenerator;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,15 +15,13 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
-
     private final NotificationRepository notificationRepository;
-
-    public NotificationServiceImpl(NotificationRepository notificationRepository) {
-        this.notificationRepository = notificationRepository;
-    }
-
-    @Override
+    private final UserRepository UserRepository;
+  private final UserRepository userRepository;
+  
+  @Override
     public ResponseEntity<?> getAllNotifications() {
         List<Notification> notifications = notificationRepository.findAll();
         return ResponseEntity.ok(notifications);
@@ -56,6 +57,21 @@ public class NotificationServiceImpl implements NotificationService {
 
       Notification savedNotification = notificationRepository.save(notification);
       return ResponseEntity.ok(savedNotification);
+    }
+    
+    @Override
+    public ResponseEntity<?> sendMessage(SendMessagesRequest request) {
+      System.out.println(request);
+      var sender = userRepository.findById(request.getSender()).orElse(null);
+      var message = request.getMessage();
+      
+      for (String receiverId : request.getReceivers()) {
+        var receiver = userRepository.findById(receiverId).orElse(null);
+        var notif = new Notification(null, message, null, null, request.getType(), sender, receiver);
+        addNotification(notif);
+      }
+      
+      return ResponseEntity.ok("The message has been sent successfully");
     }
 
     @Override

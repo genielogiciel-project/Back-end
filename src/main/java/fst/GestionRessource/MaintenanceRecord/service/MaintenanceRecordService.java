@@ -1,14 +1,12 @@
 package fst.GestionRessource.MaintenanceRecord.service;
 
 import fst.GestionRessource.MaintenanceRecord.model.MaintenanceRecord;
-
-import java.util.List;
-import java.util.Optional;
+import org.springframework.http.ResponseEntity;
 
 public interface MaintenanceRecordService {
-    List<MaintenanceRecord> getAllMaintenanceRecords();
-    Optional<MaintenanceRecord> getMaintenanceRecordById(String id);
-    MaintenanceRecord addMaintenanceRecord(MaintenanceRecord maintenanceRecord);
-    Optional<MaintenanceRecord> updateMaintenanceRecord(String id, MaintenanceRecord maintenanceRecord);
-    boolean deleteMaintenanceRecord(String id);
+    ResponseEntity<?> getAllMaintenanceRecords();
+    ResponseEntity<?> getMaintenanceRecordById(String id);
+    ResponseEntity<?> addMaintenanceRecord(MaintenanceRecord maintenanceRecord);
+    ResponseEntity<?> updateMaintenanceRecord(String id, MaintenanceRecord maintenanceRecord);
+    ResponseEntity<?> deleteMaintenanceRecord(String id);
 }

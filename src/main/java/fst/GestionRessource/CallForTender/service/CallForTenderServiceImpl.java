@@ -23,14 +23,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class CallForTenderServiceImpl implements CallForTenderService {
-
-  @Autowired
   private final CallForTenderRepository callForTenderRepository;
-  @Autowired
   private final RequestedProductRepository requestedProductRepository;
-  @Autowired
   private final ResourceRequestRepository resourceRequestRepository;
-	@Autowired
 	private ResourceRequestService resourceRequestService;
   // private final List<CallForTender> callForTenderList = new ArrayList<>();
 

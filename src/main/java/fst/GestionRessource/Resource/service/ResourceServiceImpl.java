@@ -53,7 +53,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public ResponseEntity<?> getResourceById(String id) {
-        return ResponseEntity.ok(resourceRepository.findById(id));
+        return ResponseEntity.ok(resourceRepository.findById(id).orElse(null));
     }
 
     @Override
@@ -71,11 +71,42 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public ResponseEntity<?> updateResource(String id, Resource resource) {
-        if (resourceRepository.existsById(id)) {
-            resource.setId(id);
-            return ResponseEntity.ok(resourceRepository.save(resource));
+      var existingResource = resourceRepository.findById(id);
+      
+      if (existingResource.isPresent()) {
+        System.out.println(resource);
+        if (resource.getBrand() != null) {
+          existingResource.get().setBrand(resource.getBrand());
         }
-        return ResponseEntity.notFound().build();
+        if (resource.getDepartment() != null) {
+          existingResource.get().setDepartment(resource.getDepartment());
+        }
+        if (resource.getType() != null) {
+          existingResource.get().setType(resource.getType());
+        }
+        if (resource.getStatus() != null) {
+          existingResource.get().setStatus(resource.getStatus());
+        }
+        if (resource.getAcquisitionDate() != null) {
+          existingResource.get().setAcquisitionDate(resource.getAcquisitionDate());
+        }
+        if (resource.getInventoryNumber() != null) {
+          existingResource.get().setInventoryNumber(resource.getInventoryNumber());
+        }
+        if (resource.getSupplier() != null) {
+          existingResource.get().setSupplier(resource.getSupplier());
+        }
+        if (resource.getSpecifications() != null) {
+          existingResource.get().setSpecifications(resource.getSpecifications());
+        }
+        if (resource.getUser() != null) {
+          existingResource.get().setUser(resource.getUser());
+        }
+        return ResponseEntity.ok(resourceRepository.save(resource));
+//        return ResponseEntity.ok(resource);
+      }
+      
+      return ResponseEntity.notFound().build();
     }
 
     @Override

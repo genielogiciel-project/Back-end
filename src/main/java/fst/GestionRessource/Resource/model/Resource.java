@@ -3,6 +3,7 @@ package fst.GestionRessource.Resource.model;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.Department.model.Department;
 import fst.GestionRessource.PanicReport.model.PanicReport;
@@ -42,6 +43,7 @@ public class Resource {
 
   @ManyToOne
   @JoinColumn(name = "supplierId")
+  @JsonIgnoreProperties({"resources"})
   private Supplier supplier;
 
   @ManyToOne
@@ -55,6 +57,7 @@ public class Resource {
   private Department department;
 
   @OneToMany(mappedBy = "resource")
-  @JsonIgnoreProperties({"user", "department"})
+  @JsonIgnoreProperties({"teacher"})
+//  @JsonIgnore
   private List<PanicReport> panicReports;
 }

@@ -5,11 +5,7 @@ import java.time.LocalDate;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import fst.GestionRessource.PanicReport.model.PanicReport;
 import fst.GestionRessource.User.model.User;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +19,14 @@ public class MaintenanceRecord {
   private String id;
   private String details;
   private LocalDate maintenanceDate;
+  @Enumerated(EnumType.STRING)
+  private Severity severity;
+  @Enumerated(EnumType.STRING)
+  private Frequency frequency;
+  @Enumerated(EnumType.STRING)
+  private Origin origin;
+  @Enumerated(EnumType.STRING)
+  private MaintenanceStatus status;
 
   @ManyToOne
   @JoinColumn(name = "technicianId")

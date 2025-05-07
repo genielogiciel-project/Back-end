@@ -36,9 +36,10 @@ public class PanicReport {
 
   @ManyToOne
   @JoinColumn(name = "resourceId")
+  @JsonIgnoreProperties({"user", "department", "panicReports"})
   private Resource resource;
 
   @OneToOne(mappedBy = "panicReport")
-  @JsonIgnoreProperties({"maintenanceRecord"})
+  @JsonIgnoreProperties({"panicReport"})
   private MaintenanceRecord maintenanceRecord;
 }

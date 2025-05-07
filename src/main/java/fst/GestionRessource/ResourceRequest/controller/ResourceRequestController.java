@@ -20,10 +20,14 @@ public class ResourceRequestController {
     private final ResourceRequestServiceImpl service;
     private final UserService userService;
 
+    @GetMapping
+    public ResponseEntity<?> getAllResourceRequests() {
+        return service.getAllResourceRequests();
+    }
 
-    @PostMapping("/all")
-    public ResponseEntity<?> getAllResourceRequests(@RequestBody UserRequest user) {
-        return service.getAllResourceRequests(user);
+    @GetMapping("/all/{userId}")
+    public ResponseEntity<?> getAllResourceRequests(@PathVariable String userId) {
+        return service.getAllResourceRequests(userId);
     }
     @GetMapping("/{id}")
     public ResponseEntity<?> getResourceRequestById(@PathVariable String id) {

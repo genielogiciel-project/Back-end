@@ -1,20 +1,23 @@
 package fst.GestionRessource.Notification.service;
 
 import fst.GestionRessource.Notification.model.Notification;
+import fst.GestionRessource.Notification.model.SendMessagesRequest;
 import org.springframework.http.ResponseEntity;
 
 public interface NotificationService {
-    public ResponseEntity<?> getAllNotifications();
+    ResponseEntity<?> getAllNotifications();
 
-    public ResponseEntity<?> getNotificationById(String id);
+    ResponseEntity<?> getNotificationById(String id);
 
-    public ResponseEntity<?> getNotificationsByUser(String userId);
+    ResponseEntity<?> getNotificationsByUser(String userId);
+    
+    ResponseEntity<?> sendMessage(SendMessagesRequest request);
 
-    public ResponseEntity<?> addNotification(Notification notification);
+    ResponseEntity<?> addNotification(Notification notification);
 
-    public ResponseEntity<?> markNotificationAsRead(String id);
+    ResponseEntity<?> markNotificationAsRead(String id);
 
-    public ResponseEntity<?> updateNotification(String id, Notification notification);
+    ResponseEntity<?> updateNotification(String id, Notification notification);
 
-    public ResponseEntity<?> deleteNotification(String id);
+    ResponseEntity<?> deleteNotification(String id);
 }
